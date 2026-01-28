@@ -1,0 +1,151 @@
+{
+  "navigation": {
+    "shop": "Shop",
+    "collections": "Collections",
+    "subscribe": "Subscribe",
+    "journal": "Journal",
+    "search": "Search",
+    "account": "Account",
+    "cart": "Cart",
+    "home": "Home"
+  },
+  "hero": {
+    "badge": "Collection 2026",
+    "title": "Fashion Without",
+    "titleAccent": "Limitation",
+    "description": "Experience the future of sustainable luxury. Premium materials, innovative design, and timeless style crafted for tomorrow.",
+    "exploreButton": "Explore Collection",
+    "subscribeButton": "Subscribe & Save",
+    "scrollText": "Scroll to discover"
+  },
+  "featured": {
+    "title": "Featured Products",
+    "viewAll": "View All Products"
+  },
+  "categories": {
+    "title": "Shop by Category",
+    "outerwear": "Outerwear",
+    "knitwear": "Knitwear",
+    "basics": "Basics",
+    "accessories": "Accessories",
+    "explore": "Explore"
+  },
+  "subscription": {
+    "title": "Fashion Revolution",
+    "subtitle": "Join Our Subscription",
+    "description": "Get new items handpicked by our curators delivered to your door every month. Save 20% on all pieces and enjoy free shipping worldwide.",
+    "badge": "Save 20%",
+    "button": "Start Subscription",
+    "price": "From €9.99/month"
+  },
+  "values": {
+    "title": "Why Choose AXYOM",
+    "sustainable": {
+      "title": "Sustainable",
+      "description": "Ethically sourced materials and eco-friendly production processes"
+    },
+    "innovative": {
+      "title": "Innovative",
+      "description": "Smart fabrics and cutting-edge technology integrated into every piece"
+    },
+    "timeless": {
+      "title": "Timeless",
+      "description": "Designs that transcend seasons and trends for lasting style"
+    },
+    "luxury": {
+      "title": "Luxury",
+      "description": "Premium quality and meticulous craftsmanship in every garment"
+    }
+  },
+  "footer": {
+    "brandDesc": "Future fashion for the conscious consumer. Sustainable, innovative, and timeless.",
+    "shop": "Shop",
+    "company": "Company",
+    "support": "Support",
+    "legal": "Legal",
+    "allProducts": "All Products",
+    "newArrivals": "New Arrivals",
+    "bestsellers": "Bestsellers",
+    "sale": "Sale",
+    "aboutUs": "About Us",
+    "sustainability": "Sustainability",
+    "careers": "Careers",
+    "press": "Press",
+    "contact": "Contact",
+    "shipping": "Shipping",
+    "returns": "Returns",
+    "faq": "FAQ",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookie Policy",
+    "copyright": "© 2026 AXYOM. All rights reserved.",
+    "followUs": "Follow us on social media"
+  },
+  "products": {
+    "title": "Our Collections",
+    "addToCart": "Add to Cart",
+    "viewDetails": "View Details",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "size": "Size",
+    "color": "Color",
+    "quantity": "Quantity",
+    "price": "Price",
+    "rating": "Rating",
+    "reviews": "reviews"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "continueShoppingButton": "Continue Shopping",
+    "summary": "Order Summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "freeShipping": "Free Shipping",
+    "shippingCost": "€4.99",
+    "shippingNote": "Free shipping on orders over €59",
+    "total": "Total",
+    "checkout": "Proceed to Checkout",
+    "quantity": "Quantity"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "billingInfo": "Billing Information",
+    "shippingInfo": "Shipping Information",
+    "orderSummary": "Order Summary",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "city": "City",
+    "zipCode": "Zip Code",
+    "country": "Country",
+    "paymentMethod": "Payment Method",
+    "completeOrder": "Complete Order",
+    "backToCart": "Back to Cart"
+  },
+  "blog": {
+    "title": "Journal",
+    "readMore": "Read More",
+    "by": "By",
+    "readTime": "min read",
+    "publishedOn": "Published on"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "filter": "Filter",
+    "sort": "Sort",
+    "search": "Search"
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "navigation": {
+    "shop": "Boutique",
+    "collections": "Collections",
+    "subscribe": "S'abonner",
+    "journal": "Journal",
+    "search": "Rechercher",
+    "account": "Compte",
+    "cart": "Panier",
+    "home": "Accueil"
+  },
+  "hero": {
+    "badge": "Collection 2026",
+    "title": "La Mode Sans",
+    "titleAccent": "Limite",
+    "description": "Découvrez l'avenir du luxe durable. Matériaux premium, design innovant et style intemporel conçus pour demain.",
+    "exploreButton": "Explorer la Collection",
+    "subscribeButton": "S'abonner et Économiser",
+    "scrollText": "Faites défiler pour découvrir"
+  },
+  "featured": {
+    "title": "Produits en Vedette",
+    "viewAll": "Voir Tous les Produits"
+  },
+  "categories": {
+    "title": "Acheter par Catégorie",
+    "outerwear": "Vêtements d'Extérieur",
+    "knitwear": "Mailles",
+    "basics": "Basiques",
+    "accessories": "Accessoires",
+    "explore": "Explorer"
+  },
+  "subscription": {
+    "title": "Révolution de la Mode",
+    "subtitle": "Rejoignez Notre Abonnement",
+    "description": "Recevez chaque mois des articles sélectionnés par nos curateurs directement à votre porte. Économisez 20% sur tous les pièces et profitez de la livraison gratuite dans le monde entier.",
+    "badge": "Économisez 20%",
+    "button": "Commencer l'Abonnement",
+    "price": "À partir de 9,99 €/mois"
+  },
+  "values": {
+    "title": "Pourquoi Choisir AXYOM",
+    "sustainable": {
+      "title": "Durable",
+      "description": "Matériaux éthiquement sourcés et processus de production respectueux de l'environnement"
+    },
+    "innovative": {
+      "title": "Innovant",
+      "description": "Tissus intelligents et technologie de pointe intégrés dans chaque pièce"
+    },
+    "timeless": {
+      "title": "Intemporel",
+      "description": "Designs qui transcendent les saisons et les tendances pour un style durable"
+    },
+    "luxury": {
+      "title": "Luxe",
+      "description": "Qualité premium et finitions minutieuses dans chaque vêtement"
+    }
+  },
+  "footer": {
+    "brandDesc": "La mode du futur pour le consommateur conscient. Durable, innovante et intemporelle.",
+    "shop": "Boutique",
+    "company": "Entreprise",
+    "support": "Support",
+    "legal": "Légal",
+    "allProducts": "Tous les Produits",
+    "newArrivals": "Nouveautés",
+    "bestsellers": "Meilleures Ventes",
+    "sale": "Soldes",
+    "aboutUs": "À Propos",
+    "sustainability": "Durabilité",
+    "careers": "Carrières",
+    "press": "Presse",
+    "contact": "Contact",
+    "shipping": "Livraison",
+    "returns": "Retours",
+    "faq": "FAQ",
+    "privacy": "Politique de Confidentialité",
+    "terms": "Conditions d'Utilisation",
+    "cookies": "Politique des Cookies",
+    "copyright": "© 2026 AXYOM. Tous droits réservés.",
+    "followUs": "Suivez-nous sur les réseaux sociaux"
+  },
+  "products": {
+    "title": "Nos Collections",
+    "addToCart": "Ajouter au Panier",
+    "viewDetails": "Voir les Détails",
+    "inStock": "En Stock",
+    "outOfStock": "Rupture de Stock",
+    "size": "Taille",
+    "color": "Couleur",
+    "quantity": "Quantité",
+    "price": "Prix",
+    "rating": "Évaluation",
+    "reviews": "avis"
+  },
+  "cart": {
+    "title": "Panier d'Achat",
+    "empty": "Votre panier est vide",
+    "continueShoppingButton": "Continuer les Achats",
+    "summary": "Résumé de la Commande",
+    "subtotal": "Sous-total",
+    "shipping": "Livraison",
+    "freeShipping": "Livraison Gratuite",
+    "shippingCost": "4,99 €",
+    "shippingNote": "Livraison gratuite pour les commandes supérieures à 59 €",
+    "total": "Total",
+    "checkout": "Procéder au Paiement",
+    "quantity": "Quantité"
+  },
+  "checkout": {
+    "title": "Paiement",
+    "billingInfo": "Informations de Facturation",
+    "shippingInfo": "Informations de Livraison",
+    "orderSummary": "Résumé de la Commande",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Email",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "city": "Ville",
+    "zipCode": "Code Postal",
+    "country": "Pays",
+    "paymentMethod": "Méthode de Paiement",
+    "completeOrder": "Finaliser la Commande",
+    "backToCart": "Retour au Panier"
+  },
+  "blog": {
+    "title": "Journal",
+    "readMore": "Lire la Suite",
+    "by": "Par",
+    "readTime": "min de lecture",
+    "publishedOn": "Publié le"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "success": "Succès",
+    "close": "Fermer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "search": "Rechercher"
+  }
+}
