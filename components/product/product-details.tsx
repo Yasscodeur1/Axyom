@@ -15,9 +15,11 @@ import { motion, AnimatePresence } from "framer-motion";
 interface ProductDetailsProps {
   product: Product;
   relatedProducts: Product[];
+  lang: string;
+  dict: any;
 }
 
-export function ProductDetails({ product, relatedProducts }: ProductDetailsProps) {
+export function ProductDetails({ product, relatedProducts, lang, dict }: ProductDetailsProps) {
   const { addItem, isSubscriber } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
@@ -36,7 +38,7 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
       <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
         {/* Image Gallery */}
         <div className="space-y-4">
-          <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-card">
+          <div className="relative aspect-3/4 overflow-hidden rounded-xl bg-card">
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedImage}
@@ -61,12 +63,12 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
             <div className="absolute top-4 left-4 flex flex-col gap-2">
               {product.isNew && (
                 <span className="inline-flex items-center rounded-full bg-neon-cyan px-3 py-1.5 text-xs font-medium text-background">
-                  New
+                  {dict.products.new}
                 </span>
               )}
               {product.originalPrice && (
                 <span className="inline-flex items-center rounded-full bg-destructive px-3 py-1.5 text-xs font-medium text-destructive-foreground">
-                  Sale
+                  {dict.products.sale}
                 </span>
               )}
             </div>
@@ -102,9 +104,11 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
         <div className="flex flex-col">
           {/* Breadcrumb */}
           <nav className="mb-4 text-sm text-muted-foreground">
-            <Link href="/products" className="hover:text-foreground transition-colors">Products</Link>
+            <Link href={`/${lang}/products`} className="hover:text-foreground transition-colors">
+              {dict.products.products}
+            </Link>
             <span className="mx-2">/</span>
-            <Link href={`/products?category=${product.category.toLowerCase()}`} className="hover:text-foreground transition-colors">
+            <Link href={`/${lang}/products?category=${product.category.toLowerCase()}`} className="hover:text-foreground transition-colors">
               {product.category}
             </Link>
           </nav>
@@ -127,7 +131,7 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
               ))}
             </div>
             <span className="text-sm text-muted-foreground">
-              {product.rating} ({product.reviewCount} reviews)
+              {product.rating} ({product.reviewCount} {dict.products.reviews})
             </span>
           </div>
 
@@ -151,7 +155,7 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
           {/* Color Selection */}
           <div className="mt-8">
             <h3 className="text-sm font-medium text-foreground">
-              Color: <span className="text-muted-foreground">{selectedColor.name}</span>
+              {dict.products.color}: <span className="text-muted-foreground">{selectedColor.name}</span>
             </h3>
             <div className="mt-3 flex gap-3">
               {product.colors.map((color) => (
@@ -179,9 +183,9 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
           {/* Size Selection */}
           <div className="mt-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-medium text-foreground">Size</h3>
+              <h3 className="text-sm font-medium text-foreground">{dict.products.size}</h3>
               <button type="button" className="text-xs text-neon-cyan hover:underline">
-                Size Guide
+                {dict.products.sizeGuide}
               </button>
             </div>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -191,7 +195,7 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
                   type="button"
                   onClick={() => setSelectedSize(size)}
                   className={cn(
-                    "flex h-10 min-w-[3rem] items-center justify-center rounded-lg border px-4 text-sm font-medium transition-all",
+                    "flex h-10 min-w-12 items-center justify-center rounded-lg border px-4 text-sm font-medium transition-all",
                     selectedSize === size
                       ? "border-neon-cyan bg-neon-cyan/10 text-neon-cyan"
                       : "border-border bg-card text-foreground hover:border-foreground"
@@ -205,7 +209,7 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
 
           {/* Quantity */}
           <div className="mt-6">
-            <h3 className="text-sm font-medium text-foreground">Quantity</h3>
+            <h3 className="text-sm font-medium text-foreground">{dict.products.quantity}</h3>
             <div className="mt-3 flex items-center gap-3">
               <div className="flex items-center rounded-lg border border-border">
                 <button
@@ -243,10 +247,10 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
               {isAdded ? (
                 <>
                   <Check className="mr-2 h-5 w-5" />
-                  Added to Cart
+                  {dict.products.addedToCart}
                 </>
               ) : (
-                "Add to Cart"
+                dict.products.addToCart
               )}
             </Button>
           </div>
@@ -257,25 +261,35 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
               <Truck className="h-5 w-5 text-neon-cyan shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  {isSubscriber ? "Free Delivery" : `Free delivery on orders over ${FREE_SHIPPING_THRESHOLD} EUR`}
+                  {isSubscriber 
+                    ? (lang === "fr" ? "Livraison Gratuite" : "Free Delivery")
+                    : `${lang === "fr" ? "Livraison gratuite pour les commandes supérieures à" : "Free delivery on orders over"} ${FREE_SHIPPING_THRESHOLD} EUR`}
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  {isSubscriber ? "NOVA members enjoy free shipping on all orders" : "Or subscribe to NOVA for unlimited free delivery"}
+                  {isSubscriber 
+                    ? (lang === "fr" ? "Les membres AXYOM bénéficient de la livraison gratuite sur toutes les commandes" : "AXYOM members enjoy free shipping on all orders")
+                    : (lang === "fr" ? "Ou abonnez-vous à AXYOM pour une livraison gratuite illimitée" : "Or subscribe to AXYOM for unlimited free delivery")}
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <ShieldCheck className="h-5 w-5 text-neon-cyan shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-foreground">Lifetime Warranty</p>
-                <p className="text-xs text-muted-foreground mt-0.5">We stand behind every product</p>
+                <p className="text-sm font-medium text-foreground">
+                  {lang === "fr" ? "Garantie à Vie" : "Lifetime Warranty"}
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {lang === "fr" ? "Nous garantissons chaque produit" : "We stand behind every product"}
+                </p>
               </div>
             </div>
           </div>
 
           {/* Full Description */}
           <div className="mt-8">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">Description</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
+              {lang === "fr" ? "Description" : "Description"}
+            </h3>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
               {product.description}
             </p>
@@ -300,19 +314,23 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
         <section className="mt-20 lg:mt-32">
           <div className="flex items-end justify-between mb-8">
             <div>
-              <span className="text-xs uppercase tracking-[0.2em] text-neon-cyan">You may also like</span>
-              <h2 className="mt-2 font-serif text-2xl lg:text-3xl text-foreground">Related Products</h2>
+              <span className="text-xs uppercase tracking-[0.2em] text-neon-cyan">
+                {lang === "fr" ? "Vous aimerez aussi" : "You may also like"}
+              </span>
+              <h2 className="mt-2 font-serif text-2xl lg:text-3xl text-foreground">
+                {dict.products.relatedProducts}
+              </h2>
             </div>
             <Button asChild variant="ghost" className="text-foreground/80 hover:text-neon-cyan group">
-              <Link href={`/products?category=${product.category.toLowerCase()}`}>
-                View All
+              <Link href={`/${lang}/products?category=${product.category.toLowerCase()}`}>
+                {lang === "fr" ? "Voir Tout" : "View All"}
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             {relatedProducts.map((relatedProduct) => (
-              <ProductCard key={relatedProduct.id} product={relatedProduct} />
+              <ProductCard key={relatedProduct.id} product={relatedProduct} lang={lang} />
             ))}
           </div>
         </section>

@@ -8,7 +8,12 @@ import { useCart } from "./cart-context";
 import { FREE_SHIPPING_THRESHOLD, SUBSCRIPTION_PRICE } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-export function CartContent() {
+interface CartContentProps {
+  lang: string;
+  dict: any;
+}
+
+export function CartContent({ lang, dict }: CartContentProps) {
   const {
     items,
     isSubscriber,
@@ -28,13 +33,13 @@ export function CartContent() {
         <div className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary">
           <ShoppingBag className="h-10 w-10 text-muted-foreground" />
         </div>
-        <h2 className="mt-6 text-xl font-medium text-foreground">Your cart is empty</h2>
+        <h2 className="mt-6 text-xl font-medium text-foreground">{dict.cart.empty}</h2>
         <p className="mt-2 text-muted-foreground">
-          Looks like you have not added anything to your cart yet.
+          {dict.cart.emptyDescription}
         </p>
         <Button asChild className="mt-8">
-          <Link href="/products">
-            Start Shopping
+          <Link href={`/${lang}/products`}>
+            {dict.cart.startShopping}
             <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </Button>
@@ -55,8 +60,8 @@ export function CartContent() {
               <Truck className="h-5 w-5 text-neon-cyan" />
               <span className="text-sm font-medium text-foreground">
                 {hasFreeShipping
-                  ? "You have unlocked free delivery!"
-                  : `Only ${amountUntilFreeShipping.toFixed(2)} EUR away from free delivery`}
+                  ? dict.cart.freeShippingUnlocked
+                  : dict.cart.freeShippingProgress.replace('{amount}', amountUntilFreeShipping.toFixed(2))}
               </span>
             </div>
             <div className="h-2 w-full rounded-full bg-secondary overflow-hidden">
@@ -66,7 +71,7 @@ export function CartContent() {
               />
             </div>
             <p className="mt-2 text-xs text-muted-foreground">
-              Free delivery on orders over {FREE_SHIPPING_THRESHOLD} EUR
+              {dict.cart.freeDeliveryThreshold.replace('{threshold}', FREE_SHIPPING_THRESHOLD)}
             </p>
           </div>
         )}
@@ -79,7 +84,7 @@ export function CartContent() {
               className="flex gap-4 rounded-xl bg-card p-4 lg:p-5"
             >
               <Link
-                href={`/products/${item.product.slug}`}
+                href={`/${lang}/products/${item.product.slug}`}
                 className="relative aspect-square w-24 lg:w-32 shrink-0 overflow-hidden rounded-lg"
               >
                 <Image
@@ -95,22 +100,22 @@ export function CartContent() {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <Link
-                      href={`/products/${item.product.slug}`}
+                      href={`/${lang}/products/${item.product.slug}`}
                       className="font-medium text-foreground hover:text-neon-cyan transition-colors"
                     >
                       {item.product.name}
                     </Link>
                     <div className="mt-1 flex flex-wrap gap-2 text-sm text-muted-foreground">
-                      <span>Size: {item.size}</span>
+                      <span>{dict.cart.size}: {item.size}</span>
                       <span>|</span>
-                      <span>Color: {item.color}</span>
+                      <span>{dict.cart.color}: {item.color}</span>
                     </div>
                   </div>
                   <button
                     type="button"
                     onClick={() => removeItem(item.product.id, item.size, item.color)}
                     className="text-muted-foreground hover:text-destructive transition-colors"
-                    aria-label="Remove item"
+                    aria-label={dict.cart.remove}
                   >
                     <Trash2 className="h-5 w-5" />
                   </button>
@@ -153,7 +158,7 @@ export function CartContent() {
       {/* Order Summary */}
       <div className="lg:col-span-1">
         <div className="sticky top-28 rounded-xl bg-card p-6">
-          <h2 className="text-lg font-semibold text-foreground">Order Summary</h2>
+          <h2 className="text-lg font-semibold text-foreground">{dict.cart.summary}</h2>
 
           {/* Subscription Toggle */}
           <div className="mt-6">
@@ -183,10 +188,10 @@ export function CartContent() {
                 <div>
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-4 w-4 text-neon-cyan" />
-                    <span className="font-medium text-foreground">NOVA Membership</span>
+                    <span className="font-medium text-foreground">{dict.cart.membership}</span>
                   </div>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Get free delivery on all orders for {SUBSCRIPTION_PRICE.toFixed(2)} EUR/month
+                    {dict.cart.membershipDescription.replace('{price}', SUBSCRIPTION_PRICE.toFixed(2))}
                   </p>
                 </div>
               </div>
@@ -196,24 +201,24 @@ export function CartContent() {
           {/* Summary Lines */}
           <div className="mt-6 space-y-3 text-sm">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Subtotal</span>
+              <span className="text-muted-foreground">{dict.cart.subtotal}</span>
               <span className="text-foreground">{subtotal.toFixed(2)} EUR</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Shipping</span>
+              <span className="text-muted-foreground">{dict.cart.shipping}</span>
               <span className={cn(hasFreeShipping && "text-neon-cyan")}>
-                {hasFreeShipping ? "Free" : `${shippingCost.toFixed(2)} EUR`}
+                {hasFreeShipping ? dict.cart.free : `${shippingCost.toFixed(2)} EUR`}
               </span>
             </div>
             {isSubscriber && (
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Membership (monthly)</span>
+                <span className="text-muted-foreground">{dict.cart.membershipMonthly}</span>
                 <span className="text-foreground">{SUBSCRIPTION_PRICE.toFixed(2)} EUR</span>
               </div>
             )}
             <div className="border-t border-border pt-3">
               <div className="flex justify-between text-base font-semibold">
-                <span className="text-foreground">Total</span>
+                <span className="text-foreground">{dict.cart.total}</span>
                 <span className="text-foreground">
                   {(total + (isSubscriber ? SUBSCRIPTION_PRICE : 0)).toFixed(2)} EUR
                 </span>
@@ -227,17 +232,17 @@ export function CartContent() {
             size="lg"
             className="mt-6 w-full h-14 text-base font-medium bg-foreground text-background hover:bg-neon-cyan transition-all"
           >
-            <Link href="/checkout">
-              Proceed to Checkout
+            <Link href={`/${lang}/checkout`}>
+              {dict.cart.checkout}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
 
           {/* Trust Badges */}
           <div className="mt-6 flex items-center justify-center gap-4 text-xs text-muted-foreground">
-            <span>Secure Checkout</span>
+            <span>{dict.cart.secureCheckout}</span>
             <span>|</span>
-            <span>SSL Encrypted</span>
+            <span>{dict.cart.sslEncrypted}</span>
           </div>
         </div>
       </div>

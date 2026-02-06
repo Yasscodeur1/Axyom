@@ -8,7 +8,7 @@ import { getDictionary } from "@/lib/get-dictionary";
 
 interface ProductsPageProps {
   params: Promise<{ lang: string }>;
-  searchParams: Promise<{ category?: string; collection?: string }>;
+  searchParams: Promise<{ category?: string; collection?: string; search?: string }>;
 }
 
 export async function generateMetadata({
@@ -38,19 +38,36 @@ export default async function ProductsPage({ params, searchParams }: ProductsPag
   
   let filteredProducts = products;
   
+  // Filtre par catégorie
   if (paramsData.category) {
     filteredProducts = products.filter(
       (p) => p.category.toLowerCase() === paramsData.category?.toLowerCase()
     );
   }
   
+  // Filtre par collection
   if (paramsData.collection === "new") {
     filteredProducts = filteredProducts.filter((p) => p.isNew);
   } else if (paramsData.collection === "featured") {
     filteredProducts = filteredProducts.filter((p) => p.isFeatured);
   }
 
+  // Filtre par recherche
+  if (paramsData.search) {
+    const searchQuery = paramsData.search.toLowerCase();
+    filteredProducts = filteredProducts.filter((p) => 
+      p.name.toLowerCase().includes(searchQuery) ||
+      p.description.toLowerCase().includes(searchQuery) ||
+      p.category.toLowerCase().includes(searchQuery)
+    );
+  }
+
   const getTitle = () => {
+    if (paramsData.search) {
+      return lang === 'fr' 
+        ? `Résultats pour "${paramsData.search}"` 
+        : `Results for "${paramsData.search}"`;
+    }
     if (paramsData.category) {
       return paramsData.category.charAt(0).toUpperCase() + paramsData.category.slice(1);
     }
@@ -78,11 +95,28 @@ export default async function ProductsPage({ params, searchParams }: ProductsPag
             </p>
           </div>
 
+          {/* Message si aucun résultat */}
+          {filteredProducts.length === 0 && paramsData.search && (
+            <div className="text-center py-16">
+              <p className="text-xl text-muted-foreground mb-4">
+                {lang === 'fr' 
+                  ? `Aucun produit trouvé pour "${paramsData.search}"` 
+                  : `No products found for "${paramsData.search}"`}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {lang === 'fr' 
+                  ? 'Essayez avec d\'autres mots-clés ou parcourez toutes nos collections' 
+                  : 'Try different keywords or browse all our collections'}
+              </p>
+            </div>
+          )}
+
           <ProductGrid 
-            products={filteredProducts} 
+            products={filteredProducts}
             categories={categories}
             currentCategory={paramsData.category}
             lang={lang}
+            dict={dict}
           />
         </div>
       </main>

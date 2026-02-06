@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 interface FooterProps {
   lang: string;
@@ -37,8 +38,9 @@ export function Footer({ lang, dict }: FooterProps) {
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-5">
           {/* Brand */}
           <div className="col-span-2 lg:col-span-1">
-            <Link href={`/${lang}`} className="font-serif text-2xl tracking-widest text-foreground">
-              AXYOM
+            <Link href={`/${lang}`} className="flex items-center gap-0 font-serif text-2xl tracking-widest text-foreground">
+              <Image src="/Axyomshop1.png" alt="AXYOM Logo" width={172} height={72} className="object-contain" />
+              {/* <span>XYOMSHOP</span> */}
             </Link>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
               {dict.footer.brandDesc}

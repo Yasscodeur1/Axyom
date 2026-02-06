@@ -36,7 +36,62 @@
     "description": "Get new items handpicked by our curators delivered to your door every month. Save 20% on all pieces and enjoy free shipping worldwide.",
     "badge": "Save 20%",
     "button": "Start Subscription",
-    "price": "From €9.99/month"
+    "price": "From €9.99/month",
+    "pageTitle": "Unlock Premium",
+    "pageTitleAccent": "Benefits",
+    "pageDescription": "Join thousands of members enjoying unlimited free delivery, exclusive discounts, and early access to new collections.",
+    "axyomMembership": "AXYOM Membership",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "monthlyPrice": "per month",
+    "annualPrice": "per year",
+    "saveAmount": "Save {amount} EUR",
+    "subscribe": "Subscribe Now",
+    "benefits": {
+      "freeDelivery": {
+        "title": "Unlimited Free Delivery",
+        "description": "Free shipping on every order, no minimum required. Save up to 60 EUR per year."
+      },
+      "discounts": {
+        "title": "Exclusive Discounts",
+        "description": "Members-only pricing on select items. Get 10-20% off exclusive products."
+      },
+      "earlyAccess": {
+        "title": "Early Access",
+        "description": "Shop new collections 48 hours before everyone else."
+      },
+      "birthday": {
+        "title": "Birthday Reward",
+        "description": "Receive a special gift on your birthday month."
+      },
+      "support": {
+        "title": "Priority Support",
+        "description": "Skip the queue with dedicated member support."
+      },
+      "returns": {
+        "title": "Extended Returns",
+        "description": "60-day returns instead of the standard 30 days."
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "cancel": {
+        "question": "Can I cancel anytime?",
+        "answer": "Yes, you can cancel your membership at any time. There are no long-term commitments or cancellation fees."
+      },
+      "start": {
+        "question": "When does my membership start?",
+        "answer": "Your membership starts immediately after sign-up. You will be charged monthly from your sign-up date."
+      },
+      "pastOrders": {
+        "question": "Does membership include past orders?",
+        "answer": "Membership benefits apply to all future orders. Past orders are not affected."
+      },
+      "sharing": {
+        "question": "Can I share my membership?",
+        "answer": "Membership is tied to your account and cannot be shared. Each member receives their own personalized benefits."
+      }
+    }
   },
   "values": {
     "title": "Why Choose AXYOM",
@@ -84,32 +139,55 @@
   "products": {
     "title": "Our Collections",
     "addToCart": "Add to Cart",
+    "addedToCart": "Added to Cart",
     "viewDetails": "View Details",
     "inStock": "In Stock",
     "outOfStock": "Out of Stock",
     "size": "Size",
+    "sizeGuide": "Size Guide",
     "color": "Color",
     "quantity": "Quantity",
     "price": "Price",
     "rating": "Rating",
-    "reviews": "reviews"
+    "reviews": "reviews",
+    "new": "New",
+    "sale": "Sale",
+    "products": "Products",
+    "filterByCategory": "Filter by Category",
+    "allCategories": "All Categories",
+    "relatedProducts": "You May Also Like"
   },
   "cart": {
     "title": "Shopping Cart",
     "empty": "Your cart is empty",
+    "emptyDescription": "Looks like you have not added anything to your cart yet.",
+    "startShopping": "Start Shopping",
     "continueShoppingButton": "Continue Shopping",
     "summary": "Order Summary",
     "subtotal": "Subtotal",
     "shipping": "Shipping",
     "freeShipping": "Free Shipping",
+    "free": "Free",
     "shippingCost": "€4.99",
     "shippingNote": "Free shipping on orders over €59",
+    "freeShippingUnlocked": "You have unlocked free delivery!",
+    "freeShippingProgress": "Only {amount} EUR away from free delivery",
+    "freeDeliveryThreshold": "Free delivery on orders over {threshold} EUR",
     "total": "Total",
     "checkout": "Proceed to Checkout",
-    "quantity": "Quantity"
+    "quantity": "Quantity",
+    "size": "Size",
+    "color": "Color",
+    "remove": "Remove item",
+    "membership": "AXYOM Membership",
+    "membershipDescription": "Get free delivery on all orders for {price} EUR/month",
+    "membershipMonthly": "Membership (monthly)",
+    "secureCheckout": "Secure Checkout",
+    "sslEncrypted": "SSL Encrypted"
   },
   "checkout": {
     "title": "Checkout",
+    "contactAndShipping": "Contact & Shipping",
     "billingInfo": "Billing Information",
     "shippingInfo": "Shipping Information",
     "orderSummary": "Order Summary",
@@ -119,11 +197,22 @@
     "phone": "Phone",
     "address": "Address",
     "city": "City",
-    "zipCode": "Zip Code",
+    "zipCode": "Postal Code",
     "country": "Country",
+    "payment": "Payment",
     "paymentMethod": "Payment Method",
+    "continueToPayment": "Continue to Payment",
     "completeOrder": "Complete Order",
-    "backToCart": "Back to Cart"
+    "backToCart": "Back to Cart",
+    "securePayment": "Secure Payment with Stripe",
+    "paymentInfo": "You will be redirected to Stripe to complete your payment securely.",
+    "pay": "Pay",
+    "orderConfirmed": "Order Confirmed",
+    "thankYou": "Thank you for your order! We have sent a confirmation email to",
+    "orderNumber": "Order number",
+    "freeDeliveryQualified": "Your order qualifies for free delivery",
+    "addMoreForFreeDelivery": "Add",
+    "moreForFreeDelivery": "more for free delivery"
   },
   "blog": {
     "title": "Journal",
@@ -146,6 +235,101 @@
     "previous": "Previous",
     "filter": "Filter",
     "sort": "Sort",
-    "search": "Search"
+    "search": "Search",
+    "backToHome": "Back to Home",
+    "retry": "Retry"
+  },
+  "orders": {
+    "title": "My Orders",
+    "description": "Track and manage all your orders",
+    "orderNumber": "Order",
+    "viewDetails": "View Details",
+    "noOrders": "No Orders Yet",
+    "noOrdersDescription": "You haven't placed any orders yet.",
+    "startShopping": "Start Shopping",
+    "orderDetails": "Order Details",
+    "items": "Items",
+    "shippingAddress": "Shipping Address",
+    "billingAddress": "Billing Address",
+    "orderSummary": "Order Summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "total": "Total",
+    "status": "Status",
+    "trackOrder": "Track Order",
+    "cancelOrder": "Cancel Order",
+    "downloadInvoice": "Download Invoice",
+    "contactSupport": "Contact Support"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in Touch",
+    "description": "Have questions? We're here to help. Send us a message and we'll respond as soon as possible.",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send Message",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "your.email@example.com",
+    "phonePlaceholder": "+33 6 12 34 56 78",
+    "subjectPlaceholder": "How can we help?",
+    "messagePlaceholder": "Tell us more about your inquiry...",
+    "required": "Required",
+    "optional": "Optional",
+    "successMessage": "Thank you! Your message has been sent successfully.",
+    "errorMessage": "Sorry, there was an error sending your message. Please try again."
+  },
+  "auth": {
+    "registerTitle": "Create an Account",
+    "registerSubtitle": "Join the AXYOM Community",
+    "registerDescription": "Create your account to access exclusive benefits, track your orders, and enjoy a personalized shopping experience.",
+    "loginTitle": "Welcome Back",
+    "loginSubtitle": "Sign in to Your Account",
+    "loginDescription": "Access your account to view your orders, manage your preferences, and continue your shopping journey.",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "fullName": "Full Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "firstNamePlaceholder": "John",
+    "lastNamePlaceholder": "Doe",
+    "fullNamePlaceholder": "John Doe",
+    "emailPlaceholder": "john.doe@example.com",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "passwordHint": "Minimum 8 characters",
+    "createAccount": "Create Account",
+    "signIn": "Sign In",
+    "registering": "Creating account...",
+    "signingIn": "Signing in...",
+    "registerSuccess": "Account created successfully! Redirecting...",
+    "loginSuccess": "Welcome back! Redirecting...",
+    "errorRegistering": "Error creating account. Please try again.",
+    "errorLoggingIn": "Invalid credentials. Please try again.",
+    "passwordTooShort": "Password must be at least 8 characters long.",
+    "passwordMismatch": "Passwords do not match.",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "loginHere": "Sign in here",
+    "registerHere": "Create one here",
+    "forgotPassword": "Forgot password?",
+    "rememberMe": "Remember me",
+    "termsText": "By creating an account, you agree to our",
+    "termsLink": "Terms of Service",
+    "and": "and",
+    "privacyLink": "Privacy Policy",
+    "benefit1Title": "Order Tracking",
+    "benefit1Desc": "Track your orders in real-time from purchase to delivery",
+    "benefit2Title": "Exclusive Offers",
+    "benefit2Desc": "Get access to members-only discounts and early sales",
+    "benefit3Title": "Personalized Experience",
+    "benefit3Desc": "Save your preferences and enjoy tailored recommendations",
+    "personalInfo": "Personal Information",
+    "shippingInfo": "Shipping Address",
+    "shippingInfoDesc": "This information is optional but recommended to facilitate your future orders.",
+    "securityInfo": "Account Security"
   }
 }

@@ -8,9 +8,10 @@ import { MobileNav } from "@/components/layout/mobile-nav";
 import { Footer } from "@/components/layout/footer";
 import { BlogCard } from "@/components/blog/blog-card";
 import { blogPosts, getBlogPostBySlug, getRelatedPosts } from "@/lib/data/blog";
+import { getDictionary } from "@/lib/get-dictionary";
 
 interface BlogPostPageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; lang: string }>;
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
@@ -42,7 +43,8 @@ export function generateStaticParams() {
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const { slug } = await params;
+  const { slug, lang } = await params;
+  const dict = await getDictionary(lang as 'en' | 'fr');
   const post = getBlogPostBySlug(slug);
 
   if (!post) {
@@ -50,7 +52,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   const relatedPosts = getRelatedPosts(post);
-  const formattedDate = new Date(post.publishedAt).toLocaleDateString("en-US", {
+  const formattedDate = new Date(post.publishedAt).toLocaleDateString(lang === 'fr' ? "fr-FR" : "en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -72,7 +74,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <>
-      <Header />
+      <Header lang={lang} dict={dict} />
       <main className="pt-24 pb-24 lg:pb-8">
         <script
           type="application/ld+json"
@@ -125,7 +127,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </header>
 
           {/* Cover Image */}
-          <div className="relative aspect-[21/9] overflow-hidden rounded-2xl mb-12">
+          <div className="relative aspect-21/9 overflow-hidden rounded-2xl mb-12">
             <Image
               src={post.coverImage || "/placeholder.svg"}
               alt={post.title}
@@ -170,8 +172,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </section>
         )}
       </main>
-      <Footer />
-      <MobileNav />
+      <Footer lang={lang} dict={dict} />
+      <MobileNav lang={lang} dict={dict} />
     </>
   );
 }

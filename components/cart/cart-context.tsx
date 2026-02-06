@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   useReducer,
+  useEffect,
   type ReactNode,
   useMemo,
   useCallback,
@@ -27,7 +28,40 @@ type CartAction =
       payload: { productId: string; size: string; color: string; quantity: number };
     }
   | { type: "CLEAR_CART" }
-  | { type: "TOGGLE_SUBSCRIPTION" };
+  | { type: "TOGGLE_SUBSCRIPTION" }
+  | { type: "LOAD_CART"; payload: CartState };
+
+const CART_STORAGE_KEY = "axyom_cart";
+
+// Fonction pour charger le panier depuis localStorage
+function loadCartFromStorage(): CartState {
+  if (typeof window === "undefined") return initialState;
+  
+  try {
+    const stored = localStorage.getItem(CART_STORAGE_KEY);
+    if (!stored) return initialState;
+    
+    const parsed = JSON.parse(stored);
+    return {
+      items: parsed.items || [],
+      isSubscriber: parsed.isSubscriber || false,
+    };
+  } catch (error) {
+    console.error("Erreur lors du chargement du panier:", error);
+    return initialState;
+  }
+}
+
+// Fonction pour sauvegarder le panier dans localStorage
+function saveCartToStorage(state: CartState): void {
+  if (typeof window === "undefined") return;
+  
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state));
+  } catch (error) {
+    console.error("Erreur lors de la sauvegarde du panier:", error);
+  }
+}
 
 const initialState: CartState = {
   items: [],
@@ -104,6 +138,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return { ...state, items: [] };
     case "TOGGLE_SUBSCRIPTION":
       return { ...state, isSubscriber: !state.isSubscriber };
+    case "LOAD_CART":
+      return action.payload;
     default:
       return state;
   }
@@ -129,6 +165,19 @@ const CartContext = createContext<CartContextType | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, initialState);
+
+  // Charger le panier depuis localStorage au montage
+  useEffect(() => {
+    const savedCart = loadCartFromStorage();
+    if (savedCart.items.length > 0 || savedCart.isSubscriber) {
+      dispatch({ type: "LOAD_CART", payload: savedCart });
+    }
+  }, []);
+
+  // Sauvegarder le panier dans localStorage à chaque changement
+  useEffect(() => {
+    saveCartToStorage(state);
+  }, [state]);
 
   const addItem = useCallback(
     (product: Product, quantity: number, size: string, color: string) => {

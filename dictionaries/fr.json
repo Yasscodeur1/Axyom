@@ -36,7 +36,62 @@
     "description": "Recevez chaque mois des articles sélectionnés par nos curateurs directement à votre porte. Économisez 20% sur tous les pièces et profitez de la livraison gratuite dans le monde entier.",
     "badge": "Économisez 20%",
     "button": "Commencer l'Abonnement",
-    "price": "À partir de 9,99 €/mois"
+    "price": "À partir de 9,99 €/mois",
+    "pageTitle": "Débloquez des Avantages",
+    "pageTitleAccent": "Premium",
+    "pageDescription": "Rejoignez des milliers de membres profitant de la livraison gratuite illimitée, de remises exclusives et d'un accès anticipé aux nouvelles collections.",
+    "axyomMembership": "Abonnement AXYOM",
+    "monthly": "Mensuel",
+    "annual": "Annuel",
+    "monthlyPrice": "par mois",
+    "annualPrice": "par an",
+    "saveAmount": "Économisez {amount} €",
+    "subscribe": "S'abonner Maintenant",
+    "benefits": {
+      "freeDelivery": {
+        "title": "Livraison Gratuite Illimitée",
+        "description": "Livraison gratuite sur chaque commande, sans minimum requis. Économisez jusqu'à 60 € par an."
+      },
+      "discounts": {
+        "title": "Remises Exclusives",
+        "description": "Tarifs réservés aux membres sur certains articles. Bénéficiez de 10 à 20% de réduction sur les produits exclusifs."
+      },
+      "earlyAccess": {
+        "title": "Accès Anticipé",
+        "description": "Achetez les nouvelles collections 48 heures avant tout le monde."
+      },
+      "birthday": {
+        "title": "Cadeau d'Anniversaire",
+        "description": "Recevez un cadeau spécial pendant le mois de votre anniversaire."
+      },
+      "support": {
+        "title": "Support Prioritaire",
+        "description": "Passez la file d'attente avec un support dédié aux membres."
+      },
+      "returns": {
+        "title": "Retours Prolongés",
+        "description": "60 jours de retour au lieu des 30 jours standard."
+      }
+    },
+    "faq": {
+      "title": "Questions Fréquemment Posées",
+      "cancel": {
+        "question": "Puis-je annuler à tout moment ?",
+        "answer": "Oui, vous pouvez annuler votre abonnement à tout moment. Il n'y a pas d'engagement à long terme ni de frais d'annulation."
+      },
+      "start": {
+        "question": "Quand mon abonnement commence-t-il ?",
+        "answer": "Votre abonnement commence immédiatement après votre inscription. Vous serez facturé mensuellement à partir de votre date d'inscription."
+      },
+      "pastOrders": {
+        "question": "L'abonnement inclut-il les commandes passées ?",
+        "answer": "Les avantages de l'abonnement s'appliquent à toutes les commandes futures. Les commandes passées ne sont pas affectées."
+      },
+      "sharing": {
+        "question": "Puis-je partager mon abonnement ?",
+        "answer": "L'abonnement est lié à votre compte et ne peut pas être partagé. Chaque membre reçoit ses propres avantages personnalisés."
+      }
+    }
   },
   "values": {
     "title": "Pourquoi Choisir AXYOM",
@@ -84,32 +139,55 @@
   "products": {
     "title": "Nos Collections",
     "addToCart": "Ajouter au Panier",
+    "addedToCart": "Ajouté au Panier",
     "viewDetails": "Voir les Détails",
     "inStock": "En Stock",
     "outOfStock": "Rupture de Stock",
     "size": "Taille",
+    "sizeGuide": "Guide des Tailles",
     "color": "Couleur",
     "quantity": "Quantité",
     "price": "Prix",
     "rating": "Évaluation",
-    "reviews": "avis"
+    "reviews": "avis",
+    "new": "Nouveau",
+    "sale": "Soldes",
+    "products": "Produits",
+    "filterByCategory": "Filtrer par Catégorie",
+    "allCategories": "Toutes les Catégories",
+    "relatedProducts": "Vous Aimerez Aussi"
   },
   "cart": {
     "title": "Panier d'Achat",
     "empty": "Votre panier est vide",
+    "emptyDescription": "Il semble que vous n'ayez encore rien ajouté à votre panier.",
+    "startShopping": "Commencer vos Achats",
     "continueShoppingButton": "Continuer les Achats",
     "summary": "Résumé de la Commande",
     "subtotal": "Sous-total",
     "shipping": "Livraison",
     "freeShipping": "Livraison Gratuite",
+    "free": "Gratuit",
     "shippingCost": "4,99 €",
     "shippingNote": "Livraison gratuite pour les commandes supérieures à 59 €",
+    "freeShippingUnlocked": "Vous avez débloqué la livraison gratuite !",
+    "freeShippingProgress": "Plus que {amount} EUR pour la livraison gratuite",
+    "freeDeliveryThreshold": "Livraison gratuite pour les commandes supérieures à {threshold} EUR",
     "total": "Total",
     "checkout": "Procéder au Paiement",
-    "quantity": "Quantité"
+    "quantity": "Quantité",
+    "size": "Taille",
+    "color": "Couleur",
+    "remove": "Retirer l'article",
+    "membership": "Abonnement AXYOM",
+    "membershipDescription": "Profitez de la livraison gratuite sur toutes les commandes pour {price} €/mois",
+    "membershipMonthly": "Abonnement (mensuel)",
+    "secureCheckout": "Paiement Sécurisé",
+    "sslEncrypted": "Cryptage SSL"
   },
   "checkout": {
     "title": "Paiement",
+    "contactAndShipping": "Contact et Livraison",
     "billingInfo": "Informations de Facturation",
     "shippingInfo": "Informations de Livraison",
     "orderSummary": "Résumé de la Commande",
@@ -121,9 +199,20 @@
     "city": "Ville",
     "zipCode": "Code Postal",
     "country": "Pays",
+    "payment": "Paiement",
     "paymentMethod": "Méthode de Paiement",
+    "continueToPayment": "Continuer vers le Paiement",
     "completeOrder": "Finaliser la Commande",
-    "backToCart": "Retour au Panier"
+    "backToCart": "Retour au Panier",
+    "securePayment": "Paiement Sécurisé avec Stripe",
+    "paymentInfo": "Vous serez redirigé vers Stripe pour effectuer votre paiement en toute sécurité.",
+    "pay": "Payer",
+    "orderConfirmed": "Commande Confirmée",
+    "thankYou": "Merci pour votre commande ! Nous avons envoyé un email de confirmation à",
+    "orderNumber": "Numéro de commande",
+    "freeDeliveryQualified": "Votre commande bénéficie de la livraison gratuite",
+    "addMoreForFreeDelivery": "Ajoutez",
+    "moreForFreeDelivery": "de plus pour la livraison gratuite"
   },
   "blog": {
     "title": "Journal",
@@ -146,6 +235,101 @@
     "previous": "Précédent",
     "filter": "Filtrer",
     "sort": "Trier",
-    "search": "Rechercher"
+    "search": "Rechercher",
+    "backToHome": "Retour à l'accueil",
+    "retry": "Réessayer"
+  },
+  "orders": {
+    "title": "Mes Commandes",
+    "description": "Suivez et gérez toutes vos commandes",
+    "orderNumber": "Commande",
+    "viewDetails": "Voir les détails",
+    "noOrders": "Aucune Commande",
+    "noOrdersDescription": "Vous n'avez pas encore passé de commande.",
+    "startShopping": "Commencer vos achats",
+    "orderDetails": "Détails de la Commande",
+    "items": "Articles",
+    "shippingAddress": "Adresse de Livraison",
+    "billingAddress": "Adresse de Facturation",
+    "orderSummary": "Résumé de la Commande",
+    "subtotal": "Sous-total",
+    "shipping": "Livraison",
+    "total": "Total",
+    "status": "Statut",
+    "trackOrder": "Suivre la Commande",
+    "cancelOrder": "Annuler la Commande",
+    "downloadInvoice": "Télécharger la Facture",
+    "contactSupport": "Contacter le Support"
+  },
+  "contact": {
+    "title": "Contactez-Nous",
+    "subtitle": "Entrer en Contact",
+    "description": "Des questions ? Nous sommes là pour vous aider. Envoyez-nous un message et nous vous répondrons dans les plus brefs délais.",
+    "name": "Nom",
+    "email": "Email",
+    "phone": "Téléphone",
+    "subject": "Sujet",
+    "message": "Message",
+    "send": "Envoyer le Message",
+    "namePlaceholder": "Votre nom",
+    "emailPlaceholder": "votre.email@exemple.com",
+    "phonePlaceholder": "+33 6 12 34 56 78",
+    "subjectPlaceholder": "Comment pouvons-nous vous aider ?",
+    "messagePlaceholder": "Parlez-nous de votre demande...",
+    "required": "Requis",
+    "optional": "Optionnel",
+    "successMessage": "Merci ! Votre message a été envoyé avec succès.",
+    "errorMessage": "Désolé, une erreur s'est produite lors de l'envoi de votre message. Veuillez réessayer."
+  },
+  "auth": {
+    "registerTitle": "Créer un Compte",
+    "registerSubtitle": "Rejoignez la Communauté AXYOM",
+    "registerDescription": "Créez votre compte pour accéder à des avantages exclusifs, suivre vos commandes et profiter d'une expérience d'achat personnalisée.",
+    "loginTitle": "Bon Retour",
+    "loginSubtitle": "Connectez-vous à Votre Compte",
+    "loginDescription": "Accédez à votre compte pour consulter vos commandes, gérer vos préférences et poursuivre votre parcours d'achat.",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "fullName": "Nom Complet",
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "firstNamePlaceholder": "Jean",
+    "lastNamePlaceholder": "Dupont",
+    "fullNamePlaceholder": "Jean Dupont",
+    "emailPlaceholder": "jean.dupont@exemple.com",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
+    "passwordHint": "Minimum 8 caractères",
+    "createAccount": "Créer un Compte",
+    "signIn": "Se Connecter",
+    "registering": "Création du compte...",
+    "signingIn": "Connexion...",
+    "registerSuccess": "Compte créé avec succès ! Redirection...",
+    "loginSuccess": "Bon retour ! Redirection...",
+    "errorRegistering": "Erreur lors de la création du compte. Veuillez réessayer.",
+    "errorLoggingIn": "Identifiants invalides. Veuillez réessayer.",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères.",
+    "passwordMismatch": "Les mots de passe ne correspondent pas.",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "dontHaveAccount": "Vous n'avez pas de compte ?",
+    "loginHere": "Connectez-vous ici",
+    "registerHere": "Créez-en un ici",
+    "forgotPassword": "Mot de passe oublié ?",
+    "rememberMe": "Se souvenir de moi",
+    "termsText": "En créant un compte, vous acceptez nos",
+    "termsLink": "Conditions d'Utilisation",
+    "and": "et notre",
+    "privacyLink": "Politique de Confidentialité",
+    "benefit1Title": "Suivi des Commandes",
+    "benefit1Desc": "Suivez vos commandes en temps réel de l'achat à la livraison",
+    "benefit2Title": "Offres Exclusives",
+    "benefit2Desc": "Accédez à des réductions réservées aux membres et aux ventes anticipées",
+    "benefit3Title": "Expérience Personnalisée",
+    "benefit3Desc": "Enregistrez vos préférences et profitez de recommandations sur mesure",
+    "personalInfo": "Informations Personnelles",
+    "shippingInfo": "Adresse de Livraison",
+    "shippingInfoDesc": "Ces informations sont optionnelles mais recommandées pour faciliter vos futures commandes.",
+    "securityInfo": "Sécurité du Compte"
   }
 }

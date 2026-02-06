@@ -20,11 +20,12 @@ interface ProductGridProps {
   categories: string[];
   currentCategory?: string;
   lang?: string;
+  dict: any;
 }
 
 type SortOption = "newest" | "price-low" | "price-high" | "rating";
 
-export function ProductGrid({ products, categories, currentCategory, lang = "en" }: ProductGridProps) {
+export function ProductGrid({ products, categories, currentCategory, lang = "en", dict }: ProductGridProps) {
   const [sortBy, setSortBy] = useState<SortOption>("newest");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -46,7 +47,9 @@ export function ProductGrid({ products, categories, currentCategory, lang = "en"
       {/* Desktop Sidebar */}
       <aside className="hidden lg:block w-64 shrink-0">
         <div className="sticky top-28">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground mb-4">Categories</h3>
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground mb-4">
+            {dict.products.filterByCategory}
+          </h3>
           <nav className="space-y-2">
             <Link
               href={`/${lang}/products`}
@@ -57,7 +60,7 @@ export function ProductGrid({ products, categories, currentCategory, lang = "en"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
-              All Products
+              {dict.products.allCategories}
             </Link>
             {categories.map((category) => (
               <Link
@@ -76,19 +79,21 @@ export function ProductGrid({ products, categories, currentCategory, lang = "en"
           </nav>
 
           <div className="mt-8">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground mb-4">Collections</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground mb-4">
+              {lang === "fr" ? "Collections" : "Collections"}
+            </h3>
             <nav className="space-y-2">
               <Link
                 href={`/${lang}/products?collection=new`}
                 className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                New Arrivals
+                {dict.footer.newArrivals}
               </Link>
               <Link
                 href={`/${lang}/products?collection=featured`}
                 className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                Featured
+                {dict.footer.bestsellers}
               </Link>
             </nav>
           </div>
@@ -104,15 +109,17 @@ export function ProductGrid({ products, categories, currentCategory, lang = "en"
             <SheetTrigger asChild>
               <Button variant="outline" size="sm" className="lg:hidden bg-transparent">
                 <Filter className="h-4 w-4 mr-2" />
-                Filter
+                {lang === "fr" ? "Filtrer" : "Filter"}
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-80 bg-background">
               <SheetHeader>
-                <SheetTitle>Filters</SheetTitle>
+                <SheetTitle>{lang === "fr" ? "Filtres" : "Filters"}</SheetTitle>
               </SheetHeader>
               <div className="mt-6">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground mb-4">Categories</h3>
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground mb-4">
+                  {dict.products.filterByCategory}
+                </h3>
                 <nav className="space-y-3">
                   <Link
                     href={`/${lang}/products`}
@@ -124,7 +131,7 @@ export function ProductGrid({ products, categories, currentCategory, lang = "en"
                     )}
                     onClick={() => setIsFilterOpen(false)}
                   >
-                    All Products
+                    {dict.products.allCategories}
                   </Link>
                   {categories.map((category) => (
                     <Link
@@ -144,21 +151,23 @@ export function ProductGrid({ products, categories, currentCategory, lang = "en"
                 </nav>
 
                 <div className="mt-8">
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground mb-4">Collections</h3>
+                  <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground mb-4">
+                    {lang === "fr" ? "Collections" : "Collections"}
+                  </h3>
                   <nav className="space-y-3">
                     <Link
                       href={`/${lang}/products?collection=new`}
                       className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
                       onClick={() => setIsFilterOpen(false)}
                     >
-                      New Arrivals
+                      {dict.footer.newArrivals}
                     </Link>
                     <Link
                       href={`/${lang}/products?collection=featured`}
                       className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
                       onClick={() => setIsFilterOpen(false)}
                     >
-                      Featured
+                      {dict.footer.bestsellers}
                     </Link>
                   </nav>
                 </div>
@@ -174,10 +183,10 @@ export function ProductGrid({ products, categories, currentCategory, lang = "en"
               onChange={(e) => setSortBy(e.target.value as SortOption)}
               className="bg-transparent text-sm text-foreground border-none focus:outline-none cursor-pointer"
             >
-              <option value="newest">Newest</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="rating">Top Rated</option>
+              <option value="newest">{lang === "fr" ? "Plus récents" : "Newest"}</option>
+              <option value="price-low">{lang === "fr" ? "Prix : Croissant" : "Price: Low to High"}</option>
+              <option value="price-high">{lang === "fr" ? "Prix : Décroissant" : "Price: High to Low"}</option>
+              <option value="rating">{lang === "fr" ? "Meilleures notes" : "Top Rated"}</option>
             </select>
           </div>
         </div>
@@ -191,9 +200,15 @@ export function ProductGrid({ products, categories, currentCategory, lang = "en"
           </div>
         ) : (
           <div className="text-center py-16">
-            <p className="text-muted-foreground">No products found in this category.</p>
+            <p className="text-muted-foreground">
+              {lang === "fr" 
+                ? "Aucun produit trouvé dans cette catégorie." 
+                : "No products found in this category."}
+            </p>
             <Button asChild variant="outline" className="mt-4 bg-transparent">
-              <Link href={`/${lang}/products`}>View All Products</Link>
+              <Link href={`/${lang}/products`}>
+                {lang === "fr" ? "Voir Tous les Produits" : "View All Products"}
+              </Link>
             </Button>
           </div>
         )}

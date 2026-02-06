@@ -13,7 +13,7 @@ export function Hero({ dict }: HeroProps) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background gradient - Blueish */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-card" />
+      <div className="absolute inset-0 bg-linear-to-b from-background via-background to-card" />
       
       {/* Subtle grid pattern */}
       <div 

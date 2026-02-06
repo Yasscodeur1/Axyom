@@ -5,9 +5,10 @@ import { MobileNav } from "@/components/layout/mobile-nav";
 import { Footer } from "@/components/layout/footer";
 import { ProductDetails } from "@/components/product/product-details";
 import { products, getProductBySlug } from "@/lib/data/products";
+import { getDictionary } from "@/lib/get-dictionary";
 
 interface ProductPageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; lang: string }>;
 }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
@@ -37,7 +38,8 @@ export function generateStaticParams() {
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { slug } = await params;
+  const { slug, lang } = await params;
+  const dict = await getDictionary(lang as 'en' | 'fr');
   const product = getProductBySlug(slug);
 
   if (!product) {
@@ -73,16 +75,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <>
-      <Header />
+      <Header lang={lang} dict={dict} />
       <main className="pt-24 pb-24 lg:pb-8">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <ProductDetails product={product} relatedProducts={relatedProducts} />
+        <ProductDetails product={product} relatedProducts={relatedProducts} lang={lang} dict={dict} />
       </main>
-      <Footer />
-      <MobileNav />
+      <Footer lang={lang} dict={dict} />
+      <MobileNav lang={lang} dict={dict} />
     </>
   );
 }

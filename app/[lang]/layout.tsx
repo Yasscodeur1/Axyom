@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Cormorant_Garamond } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { CartProvider } from "@/components/cart/cart-context";
+import { AuthProvider } from "@/components/auth/auth-context";
 import { getDictionary } from "@/lib/get-dictionary";
 import "./globals.css";
 
@@ -87,7 +88,9 @@ export default async function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${cormorant.variable} font-sans antialiased`}
       >
-        <CartProvider>{children}</CartProvider>
+        <AuthProvider>
+          <CartProvider>{children}</CartProvider>
+        </AuthProvider>
         <Analytics />
       </body>
     </html>

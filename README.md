@@ -35,3 +35,17 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 # Axyom
+
+
+
+ DONNÉES - Produits statiques vs API
+Incohérence architecturale :
+
+Vos produits viennent de products.ts (données statiques/mock)
+Mais vous avez un fichier productsPage.tsx qui fetch depuis l'API Laravel
+Votre page produits actuelle (page.tsx) utilise les données statiques
+Questions à clarifier :
+
+Voulez-vous utiliser des produits depuis Laravel ou rester en statique ?
+Si Laravel : il faut migrer ProductsPage pour fetch depuis l'API
+Si statique : supprimer productsPage.tsx

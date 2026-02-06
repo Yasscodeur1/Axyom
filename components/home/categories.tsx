@@ -62,7 +62,7 @@ export function Categories({ lang, dict }: CategoriesProps) {
             >
               <Link 
                 href={`/${lang}/products?category=${category.slug}`}
-                className="group relative block aspect-[3/4] overflow-hidden rounded-xl"
+                className="group relative block aspect-3/4 overflow-hidden rounded-xl"
               >
                 <Image
                   src={category.image || "/placeholder.svg"}
@@ -71,7 +71,7 @@ export function Categories({ lang, dict }: CategoriesProps) {
                   sizes="(max-width: 640px) 50vw, 25vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-background/90 via-background/20 to-transparent" />
                 <div className="absolute inset-0 bg-neon-cyan/0 transition-colors duration-300 group-hover:bg-neon-cyan/10" />
                 
                 <div className="absolute bottom-0 left-0 right-0 p-4 lg:p-6">
