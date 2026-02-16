@@ -183,7 +183,12 @@
     "membershipDescription": "Get free delivery on all orders for {price} EUR/month",
     "membershipMonthly": "Membership (monthly)",
     "secureCheckout": "Secure Checkout",
-    "sslEncrypted": "SSL Encrypted"
+    "sslEncrypted": "SSL Encrypted",
+    "onlyLeft": "Only {count} left in stock!",
+    "outOfStock": "Out of stock",
+    "stockError": "Insufficient stock for",
+    "errorOccurred": "An error occurred",
+    "checkingStocks": "Checking stocks..."
   },
   "checkout": {
     "title": "Checkout",
@@ -216,10 +221,20 @@
   },
   "blog": {
     "title": "Journal",
+    "subtitle": "The Journal",
+    "heading": "Insights & Ideas",
+    "description": "Exploring the intersection of fashion, sustainability, and innovation.",
+    "all": "All",
     "readMore": "Read More",
     "by": "By",
     "readTime": "min read",
-    "publishedOn": "Published on"
+    "publishedOn": "Published on",
+    "categories": {
+      "Sustainability": "Sustainability",
+      "Style": "Style",
+      "Technology": "Technology",
+      "Culture": "Culture"
+    }
   },
   "common": {
     "loading": "Loading...",
@@ -330,6 +345,9 @@
     "personalInfo": "Personal Information",
     "shippingInfo": "Shipping Address",
     "shippingInfoDesc": "This information is optional but recommended to facilitate your future orders.",
-    "securityInfo": "Account Security"
+    "securityInfo": "Account Security",
+    "referralCode": "Referral Code",
+    "referralCodeDesc": "If you have been referred, enter the code below to benefit from exclusive advantages.",
+    "referralCodeLabel": "Referral code"
   }
 }

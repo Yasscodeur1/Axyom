@@ -40,7 +40,7 @@
     "pageTitle": "Débloquez des Avantages",
     "pageTitleAccent": "Premium",
     "pageDescription": "Rejoignez des milliers de membres profitant de la livraison gratuite illimitée, de remises exclusives et d'un accès anticipé aux nouvelles collections.",
-    "axyomMembership": "Abonnement AXYOM",
+    "axyomMembership": "Abonnement AXYOMSHOP",
     "monthly": "Mensuel",
     "annual": "Annuel",
     "monthlyPrice": "par mois",
@@ -94,7 +94,7 @@
     }
   },
   "values": {
-    "title": "Pourquoi Choisir AXYOM",
+    "title": "Pourquoi Choisir AXYOMSHOP",
     "sustainable": {
       "title": "Durable",
       "description": "Matériaux éthiquement sourcés et processus de production respectueux de l'environnement"
@@ -133,7 +133,7 @@
     "privacy": "Politique de Confidentialité",
     "terms": "Conditions d'Utilisation",
     "cookies": "Politique des Cookies",
-    "copyright": "© 2026 AXYOM. Tous droits réservés.",
+    "copyright": "© 2026 AXYOMSHOP. Tous droits réservés.",
     "followUs": "Suivez-nous sur les réseaux sociaux"
   },
   "products": {
@@ -179,11 +179,16 @@
     "size": "Taille",
     "color": "Couleur",
     "remove": "Retirer l'article",
-    "membership": "Abonnement AXYOM",
+    "membership": "Abonnement AXYOMSHOP",
     "membershipDescription": "Profitez de la livraison gratuite sur toutes les commandes pour {price} €/mois",
     "membershipMonthly": "Abonnement (mensuel)",
     "secureCheckout": "Paiement Sécurisé",
-    "sslEncrypted": "Cryptage SSL"
+    "sslEncrypted": "Cryptage SSL",
+    "onlyLeft": "Plus que {count} en stock !",
+    "outOfStock": "Rupture de stock",
+    "stockError": "Stock insuffisant pour",
+    "errorOccurred": "Une erreur est survenue",
+    "checkingStocks": "Vérification des stocks..."
   },
   "checkout": {
     "title": "Paiement",
@@ -216,10 +221,20 @@
   },
   "blog": {
     "title": "Journal",
+    "subtitle": "Le Journal",
+    "heading": "Idées & Réflexions",
+    "description": "Explorer l'intersection de la mode, de la durabilité et de l'innovation.",
+    "all": "Tous",
     "readMore": "Lire la Suite",
     "by": "Par",
     "readTime": "min de lecture",
-    "publishedOn": "Publié le"
+    "publishedOn": "Publié le",
+    "categories": {
+      "Sustainability": "Durabilité",
+      "Style": "Style",
+      "Technology": "Technologie",
+      "Culture": "Culture"
+    }
   },
   "common": {
     "loading": "Chargement...",
@@ -283,7 +298,7 @@
   },
   "auth": {
     "registerTitle": "Créer un Compte",
-    "registerSubtitle": "Rejoignez la Communauté AXYOM",
+    "registerSubtitle": "Rejoignez la Communauté AXYOMSHOP",
     "registerDescription": "Créez votre compte pour accéder à des avantages exclusifs, suivre vos commandes et profiter d'une expérience d'achat personnalisée.",
     "loginTitle": "Bon Retour",
     "loginSubtitle": "Connectez-vous à Votre Compte",
@@ -330,6 +345,9 @@
     "personalInfo": "Informations Personnelles",
     "shippingInfo": "Adresse de Livraison",
     "shippingInfoDesc": "Ces informations sont optionnelles mais recommandées pour faciliter vos futures commandes.",
-    "securityInfo": "Sécurité du Compte"
+    "securityInfo": "Sécurité du Compte",
+    "referralCode": "Code de Parrainage",
+    "referralCodeDesc": "Si vous avez été parrainé, entrez le code ci-dessous pour bénéficier d'avantages exclusifs.",
+    "referralCodeLabel": "Code de parrainage"
   }
 }

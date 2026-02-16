@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "./cart-context";
 import { FREE_SHIPPING_THRESHOLD, SUBSCRIPTION_PRICE } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface CartContentProps {
   lang: string;
@@ -14,6 +17,9 @@ interface CartContentProps {
 }
 
 export function CartContent({ lang, dict }: CartContentProps) {
+  // Debug: Vérifier que lang est bien reçu
+  console.log("🔍 CartContent - Lang reçu:", lang, "| Type:", typeof lang);
+  
   const {
     items,
     isSubscriber,
@@ -25,7 +31,178 @@ export function CartContent({ lang, dict }: CartContentProps) {
     total,
     amountUntilFreeShipping,
     hasFreeShipping,
+    validateStocks,
   } = useCart();
+
+  const [isCheckingStocks, setIsCheckingStocks] = useState(false);
+  const [stockCheckFailed, setStockCheckFailed] = useState(false);
+  const [isChecking, setIsChecking] = useState(false);
+  const [stockError, setStockError] = useState<string | null>(null);
+  const router = useRouter();
+
+  // Vérifier les stocks au montage du composant
+  useEffect(() => {
+    const checkStocks = async () => {
+      if (items.length === 0) return;
+
+      setIsCheckingStocks(true);
+      setStockCheckFailed(false);
+
+      try {
+        // TOUJOURS utiliser l'API Next.js locale pour la vérification de stock
+        const apiUrl = '/api/products/check-stocks';
+
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            items: items.map(item => ({
+              id: item.product.id,
+              qty: item.quantity
+            }))
+          })
+        });
+
+        const data = await response.json();
+
+        if (!data.success || !response.ok) {
+          // Afficher toast d'erreur
+          toast.error(
+            lang === 'fr' 
+              ? '⚠️ Impossible de vérifier les stocks. Veuillez réessayer.' 
+              : '⚠️ Unable to verify stock levels. Please try again.'
+          );
+          setStockCheckFailed(true);
+          return;
+        }
+
+        // Vérifier si des quantités ont été ajustées
+        let hasAdjustments = false;
+        items.forEach(item => {
+          const availableStock = data.availableStocks?.[item.product.id];
+          if (availableStock !== undefined && availableStock < item.quantity) {
+            hasAdjustments = true;
+            // Mettre à jour automatiquement la quantité
+            updateQuantity(item.product.id, item.size, item.color, availableStock);
+          }
+        });
+
+        if (hasAdjustments) {
+          toast.warning(
+            lang === 'fr'
+              ? '📦 Certains articles ont été ajustés selon la disponibilité.'
+              : '📦 Some items have been adjusted based on availability.'
+          );
+        }
+
+      } catch (error) {
+        console.error('Erreur lors de la vérification des stocks:', error);
+        toast.error(
+          lang === 'fr'
+            ? '❌ Erreur de connexion au serveur. Veuillez réessayer.'
+            : '❌ Server connection error. Please try again.'
+        );
+        setStockCheckFailed(true);
+      } finally {
+        setIsCheckingStocks(false);
+      }
+    };
+
+    checkStocks();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Handler pour le bouton checkout avec vérification des stocks
+  const handleCheckout = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsChecking(true);
+    setStockError(null);
+
+    console.log("🚀 Début checkout - Items:", items.length);
+    console.log("🔍 Lang:", lang, "| Type:", typeof lang);
+
+    try {
+      // TOUJOURS utiliser l'API Next.js locale pour la vérification de stock
+      // (Laravel n'a pas cette route, c'est une vérification côté frontend)
+      const apiUrl = '/api/products/check-stocks';
+
+      console.log("📡 API URL (stock check):", apiUrl);
+
+      const payload = {
+        items: items.map((item) => ({
+          id: item.product.id,
+          quantity: item.quantity,
+        })),
+      };
+
+      console.log("📦 Payload:", JSON.stringify(payload, null, 2));
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: items.map((item) => ({
+            id: item.product.id,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        // Si le stock est insuffisant
+        if (data.outOfStock && data.outOfStock.length > 0) {
+          const names = data.outOfStock.map((p: any) => p.name).join(", ");
+          setStockError(`${dict.cart.stockError || 'Stock insuffisant pour'}: ${names}`);
+          
+          // Mise à jour automatique des quantités dans le panier
+          data.outOfStock.forEach((p: any) => {
+            const item = items.find(i => i.product.id === p.id);
+            if (item) {
+              updateQuantity(p.id, item.size, item.color, p.available);
+            }
+          });
+
+          toast.warning(
+            lang === 'fr'
+              ? '⚠️ Les quantités ont été ajustées selon le stock disponible.'
+              : '⚠️ Quantities have been adjusted based on available stock.'
+          );
+        } else {
+          setStockError(
+            lang === 'fr' 
+              ? '⚠️ Impossible de vérifier les stocks. Veuillez réessayer.'
+              : '⚠️ Unable to verify stock levels. Please try again.'
+          );
+        }
+        
+        setIsChecking(false);
+        return;
+      }
+
+      // Si le stock est OK, on redirige vers la page de paiement
+      // Sécuriser la redirection
+      const targetLang = lang || 'fr'; // Fallback si lang est undefined
+      const targetUrl = `/${targetLang}/checkout`;
+      const sanitizedUrl = targetUrl.replace(/\/+/g, '/'); // Supprime les doubles slashs
+      
+      console.log("✅ Stock OK - Navigation vers:", sanitizedUrl, "| Lang:", targetLang);
+      
+      // Utiliser router.push pour préserver le state du Context
+      router.push(sanitizedUrl);
+    } catch (error) {
+      console.error("Erreur de vérification:", error);
+      setStockError(dict.cart.errorOccurred || "Une erreur est survenue.");
+      toast.error(
+        lang === 'fr'
+          ? '❌ Erreur de connexion au serveur.'
+          : '❌ Server connection error.'
+      );
+      setIsChecking(false);
+    }
+  };
 
   if (items.length === 0) {
     return (
@@ -94,6 +271,13 @@ export function CartContent({ lang, dict }: CartContentProps) {
                   sizes="128px"
                   className="object-cover"
                 />
+                {item.product.stock === 0 && (
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <span className="text-white text-xs font-bold uppercase tracking-wider">
+                      {dict.cart.outOfStock}
+                    </span>
+                  </div>
+                )}
               </Link>
 
               <div className="flex flex-1 flex-col">
@@ -109,7 +293,31 @@ export function CartContent({ lang, dict }: CartContentProps) {
                       <span>{dict.cart.size}: {item.size}</span>
                       <span>|</span>
                       <span>{dict.cart.color}: {item.color}</span>
+                      {item.product.stock !== undefined && (
+                        <>
+                          <span>|</span>
+                          <span className={cn(
+                            item.product.stock <= 5 && "text-orange-500 font-medium"
+                          )}>
+                            {item.product.stock <= 5 
+                              ? `${lang === 'fr' ? 'Plus que' : 'Only'} ${item.product.stock} ${lang === 'fr' ? 'en stock' : 'left'}` 
+                              : `${item.product.stock} ${lang === 'fr' ? 'en stock' : 'in stock'}`
+                            }
+                          </span>
+                        </>
+                      )}
                     </div>
+                    {item.product.stock !== undefined && item.product.stock <= 5 && item.product.stock > 0 && (
+                      <p className="mt-1 text-xs font-medium text-orange-500 flex items-center gap-1">
+                        <Sparkles className="h-3 w-3" />
+                        {dict.cart.onlyLeft.replace('{count}', item.product.stock.toString())}
+                      </p>
+                    )}
+                    {item.product.stock !== undefined && item.product.stock === 0 && (
+                      <p className="mt-1 text-xs font-medium text-destructive">
+                        {dict.cart.outOfStock}
+                      </p>
+                    )}
                   </div>
                   <button
                     type="button"
@@ -137,10 +345,16 @@ export function CartContent({ lang, dict }: CartContentProps) {
                     </span>
                     <button
                       type="button"
+                      disabled={item.product.stock !== undefined && item.quantity >= item.product.stock}
                       onClick={() =>
                         updateQuantity(item.product.id, item.size, item.color, item.quantity + 1)
                       }
-                      className="flex h-8 w-8 items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                      className={cn(
+                        "flex h-8 w-8 items-center justify-center transition-colors",
+                        item.product.stock !== undefined && item.quantity >= item.product.stock
+                          ? "text-muted-foreground/30 cursor-not-allowed"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
                     >
                       <Plus className="h-3.5 w-3.5" />
                     </button>
@@ -226,17 +440,75 @@ export function CartContent({ lang, dict }: CartContentProps) {
             </div>
           </div>
 
-          {/* Checkout Button */}
-          <Button
-            asChild
-            size="lg"
-            className="mt-6 w-full h-14 text-base font-medium bg-foreground text-background hover:bg-neon-cyan transition-all"
-          >
-            <Link href={`/${lang}/checkout`}>
-              {dict.cart.checkout}
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
+          {/* Checkout Button Section */}
+          <div className="space-y-4 mt-6">
+            {/* Message d'erreur si erreur de vérification initiale */}
+            {stockCheckFailed && (
+              <div className="p-3 bg-destructive/10 border border-destructive rounded-lg">
+                <p className="text-xs text-destructive text-center">
+                  {lang === 'fr' 
+                    ? '⚠️ Impossible de vérifier les stocks. Le paiement est temporairement désactivé.'
+                    : '⚠️ Unable to verify stocks. Checkout is temporarily disabled.'
+                  }
+                </p>
+              </div>
+            )}
+            
+            {/* Message d'erreur si produits en rupture */}
+            {items.some(item => item.product.stock === 0) && (
+              <div className="p-3 bg-destructive/10 border border-destructive rounded-lg">
+                <p className="text-xs text-destructive text-center">
+                  {lang === 'fr'
+                    ? '⚠️ Certains articles sont en rupture de stock. Veuillez les retirer.'
+                    : '⚠️ Some items are out of stock. Please remove them.'
+                  }
+                </p>
+              </div>
+            )}
+
+            {/* Message d'erreur dynamique lors du checkout */}
+            {stockError && (
+              <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium animate-in fade-in slide-in-from-top-1">
+                <div className="flex items-center gap-2">
+                  <Trash2 className="h-4 w-4" />
+                  {stockError}
+                </div>
+              </div>
+            )}
+
+            <Button
+              onClick={handleCheckout}
+              disabled={isCheckingStocks || isChecking || stockCheckFailed || items.some(item => item.product.stock === 0)}
+              size="lg"
+              className={cn(
+                "w-full h-14 text-base font-medium transition-all",
+                isCheckingStocks || isChecking || stockCheckFailed || items.some(item => item.product.stock === 0)
+                  ? "bg-muted text-muted-foreground cursor-not-allowed"
+                  : "bg-foreground text-background hover:bg-neon-cyan"
+              )}
+            >
+              {isCheckingStocks ? (
+                <span className="flex items-center gap-2">
+                  <span className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
+                  {lang === 'fr' ? 'Vérification initiale...' : 'Initial checking...'}
+                </span>
+              ) : isChecking ? (
+                <span className="flex items-center gap-2">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  {dict.cart.checkingStocks || (lang === 'fr' ? 'Vérification...' : 'Checking...')}
+                </span>
+              ) : stockCheckFailed || items.some(item => item.product.stock === 0) ? (
+                <span>
+                  {lang === 'fr' ? 'Paiement indisponible' : 'Checkout unavailable'}
+                </span>
+              ) : (
+                <>
+                  {dict.cart.checkout}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </>
+              )}
+            </Button>
+          </div>
 
           {/* Trust Badges */}
           <div className="mt-6 flex items-center justify-center gap-4 text-xs text-muted-foreground">

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Star } from "lucide-react";
 import type { Product } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { FavoriteButton } from "./favorite-button";
 
 interface ProductCardProps {
   product: Product;
@@ -17,8 +18,8 @@ export function ProductCard({ product, lang = "en", priority = false }: ProductC
     <Link href={`/${lang}/products/${product.slug}`} className="group block">
       <div className="relative aspect-3/4 overflow-hidden rounded-lg bg-card">
         <Image
-          src={product.images[0] || "/placeholder.svg"}
-          alt={product.name}
+          src={product.images?.[0] || "/placeholder.svg"}
+          alt={product.name || "Product image"}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -37,6 +38,11 @@ export function ProductCard({ product, lang = "en", priority = false }: ProductC
               Sale
             </span>
           )}
+        </div>
+
+        {/* Favorite button */}
+        <div className="absolute top-3 right-3 z-10">
+          <FavoriteButton productId={product.id} />
         </div>
         
         {/* Quick view overlay */}

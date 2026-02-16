@@ -147,6 +147,7 @@ export const register = async (userData: {
   city?: string;
   postal_code?: string;
   country?: string;
+  referral_code?: string;
 }) => {
   const response = await fetch(`${API_URL}/api/register`, {
     method: "POST",

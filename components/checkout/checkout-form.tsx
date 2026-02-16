@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCart } from "@/components/cart/cart-context";
 import { useAuth } from "@/components/auth/auth-context";
+import { OrderBump } from "@/components/checkout/order-bump";
 import { SUBSCRIPTION_PRICE, FREE_SHIPPING_THRESHOLD } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -106,8 +107,19 @@ export function CheckoutForm({ lang, dict }: CheckoutFormProps) {
     };
 
     try {
+      // Vérifier que l'API URL est configurée
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
+      if (!apiUrl) {
+        alert("❌ Erreur de configuration : L'API Laravel n'est pas accessible.\n\nVeuillez démarrer votre serveur Laravel ou configurer NEXT_PUBLIC_API_URL dans .env.local");
+        setIsProcessing(false);
+        return;
+      }
+
+      console.log("🔍 Checkout API URL:", apiUrl);
+      console.log("📦 Payload envoyé:", JSON.stringify(payload, null, 2));
+
       // Appel vers votre API Laravel
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/checkout`, {
+      const response = await fetch(`${apiUrl}/api/checkout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -118,13 +130,30 @@ export function CheckoutForm({ lang, dict }: CheckoutFormProps) {
 
       const data = await response.json();
 
+      console.log("📥 Réponse Laravel:", data);
+
       if (!response.ok) {
         throw new Error(data.message || "Erreur lors de la création de la commande");
       }
 
       // Si Laravel retourne une URL de paiement Stripe, rediriger
       if (data.checkout_url) {
-        window.location.href = data.checkout_url;
+        console.log("🔗 URL Stripe reçue:", data.checkout_url);
+        
+        // Valider que l'URL est bien une URL Stripe valide
+        if (!data.checkout_url.startsWith('http://') && !data.checkout_url.startsWith('https://')) {
+          throw new Error(`URL de paiement invalide: ${data.checkout_url}`);
+        }
+
+        try {
+          // Valider que c'est une URL bien formée
+          new URL(data.checkout_url);
+          console.log("✅ Redirection vers Stripe...");
+          window.location.href = data.checkout_url;
+        } catch (urlError) {
+          console.error("❌ URL malformée:", data.checkout_url);
+          throw new Error(`L'URL de paiement est invalide: ${data.checkout_url}`);
+        }
       } 
       // Sinon, afficher la confirmation (pour test)
       else if (data.order_number) {
@@ -143,7 +172,12 @@ export function CheckoutForm({ lang, dict }: CheckoutFormProps) {
 
   // 2. Utilise useEffect pour la redirection
   useEffect(() => {
+    console.log("🛒 Checkout - Items dans le panier:", items.length);
+    console.log("📦 Items:", items);
+    console.log("📍 Step actuel:", step);
+    
     if (items.length === 0 && step !== "confirmation") {
+      console.log("⚠️ Panier vide détecté - Redirection vers /cart");
       router.push(`/${lang}/cart`);
     }
   }, [items, step, router, lang]); 
@@ -407,6 +441,11 @@ export function CheckoutForm({ lang, dict }: CheckoutFormProps) {
                 <ShieldCheck className="h-3.5 w-3.5" />
                 256-bit Encryption
               </span>
+            </div>
+
+            {/* Order Bump - Offre irrésistible */}
+            <div className="mb-6">
+              <OrderBump lang={lang} dict={dict} />
             </div>
 
             <div className="flex gap-4">

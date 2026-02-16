@@ -10,10 +10,12 @@ import { motion } from "framer-motion";
 interface BlogCardProps {
   post: BlogPost;
   featured?: boolean;
+  lang: string;
+  dict: any;
 }
 
-export function BlogCard({ post, featured = false }: BlogCardProps) {
-  const formattedDate = new Date(post.publishedAt).toLocaleDateString("en-US", {
+export function BlogCard({ post, featured = false, lang, dict }: BlogCardProps) {
+  const formattedDate = new Date(post.publishedAt).toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-US', {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -27,9 +29,9 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
         transition={{ duration: 0.5 }}
         className="md:col-span-2"
       >
-        <Link href={`/blog/${post.slug}`} className="group block">
+        <Link href={`/${lang}/blog/${post.slug}`} className="group block">
           <div className="grid md:grid-cols-2 gap-6 rounded-2xl bg-card overflow-hidden">
-            <div className="relative aspect-[4/3] md:aspect-auto">
+            <div className="relative aspect-4/3 md:aspect-auto">
               <Image
                 src={post.coverImage || "/placeholder.svg"}
                 alt={post.title}
@@ -41,7 +43,7 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
             </div>
             <div className="flex flex-col justify-center p-6 md:p-8">
               <span className="inline-block w-fit rounded-full bg-neon-cyan/10 px-3 py-1 text-xs font-medium text-neon-cyan">
-                {post.category}
+                {dict.blog.categories[post.category as keyof typeof dict.blog.categories] || post.category}
               </span>
               <h2 className="mt-4 font-serif text-2xl lg:text-3xl text-foreground group-hover:text-neon-cyan transition-colors text-balance">
                 {post.title}
@@ -63,7 +65,7 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
                 <span className="text-muted-foreground">|</span>
                 <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                   <Clock className="h-4 w-4" />
-                  {post.readTime} min read
+                  {post.readTime} {dict.blog.readTime}
                 </div>
               </div>
             </div>
@@ -79,8 +81,8 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Link href={`/blog/${post.slug}`} className="group block">
-        <div className="relative aspect-[16/10] overflow-hidden rounded-xl">
+      <Link href={`/${lang}/blog/${post.slug}`} className="group block">
+        <div className="relative aspect-16/10 overflow-hidden rounded-xl">
           <Image
             src={post.coverImage || "/placeholder.svg"}
             alt={post.title}
@@ -88,10 +90,10 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-background/80 to-transparent" />
           <div className="absolute bottom-4 left-4">
             <span className="inline-block rounded-full bg-neon-cyan/10 backdrop-blur-sm px-3 py-1 text-xs font-medium text-neon-cyan">
-              {post.category}
+              {dict.blog.categories[post.category as keyof typeof dict.blog.categories] || post.category}
             </span>
           </div>
         </div>
@@ -106,7 +108,7 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
             <span>{formattedDate}</span>
             <span className="flex items-center gap-1.5">
               <Clock className="h-3.5 w-3.5" />
-              {post.readTime} min
+              {post.readTime} {dict.blog.readTime}
             </span>
           </div>
         </div>

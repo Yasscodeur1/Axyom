@@ -3,7 +3,7 @@ import { Header } from "@/components/layout/header";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { Footer } from "@/components/layout/footer";
 import { ProductGrid } from "@/components/product/product-grid";
-import { products, getAllCategories } from "@/lib/data/products";
+import { getProducts, getAllCategories } from "@/lib/data/products";
 import { getDictionary } from "@/lib/get-dictionary";
 
 interface ProductsPageProps {
@@ -15,6 +15,7 @@ export async function generateMetadata({
   params,
 }: ProductsPageProps): Promise<Metadata> {
   const { lang } = await params;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
   const titles = {
     en: "Shop All Products",
     fr: "Tous les Produits",
@@ -27,6 +28,19 @@ export async function generateMetadata({
   return {
     title: titles[lang as 'en' | 'fr'] || titles.en,
     description: descriptions[lang as 'en' | 'fr'] || descriptions.en,
+    alternates: {
+      canonical: `/${lang}/products`,
+      languages: {
+        'fr-FR': '/fr/products',
+        'en-US': '/en/products',
+      },
+    },
+    openGraph: {
+      title: titles[lang as 'en' | 'fr'] || titles.en,
+      description: descriptions[lang as 'en' | 'fr'] || descriptions.en,
+      url: `${baseUrl}/${lang}/products`,
+      type: "website",
+    },
   };
 }
 
@@ -34,13 +48,14 @@ export default async function ProductsPage({ params, searchParams }: ProductsPag
   const { lang } = await params;
   const dict = await getDictionary(lang as 'en' | 'fr');
   const paramsData = await searchParams;
-  const categories = getAllCategories();
+  const categories = await getAllCategories(lang);
   
-  let filteredProducts = products;
+  // Récupérer tous les produits depuis l'API
+  let filteredProducts = await getProducts(lang);
   
   // Filtre par catégorie
   if (paramsData.category) {
-    filteredProducts = products.filter(
+    filteredProducts = filteredProducts.filter(
       (p) => p.category.toLowerCase() === paramsData.category?.toLowerCase()
     );
   }

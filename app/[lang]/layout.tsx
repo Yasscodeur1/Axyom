@@ -2,6 +2,7 @@ import React from "react"
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Cormorant_Garamond } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { Toaster } from "sonner";
 import { CartProvider } from "@/components/cart/cart-context";
 import { AuthProvider } from "@/components/auth/auth-context";
 import { getDictionary } from "@/lib/get-dictionary";
@@ -24,11 +25,12 @@ export async function generateMetadata({
   params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
   const { lang } = await params;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
   const dictionary = await getDictionary(lang as 'en' | 'fr');
 
   const titles = {
-    en: "AXYOM | Future Fashion",
-    fr: "AXYOM | Mode du Futur",
+    en: "AXYOMSHOP | Future Fashion",
+    fr: "AXYOMSHOP | Mode du Futur",
   };
 
   const descriptions = {
@@ -37,23 +39,32 @@ export async function generateMetadata({
   };
 
   const keywords = {
-    en: ["fashion", "luxury", "sustainable", "premium clothing", "AXYOM"],
-    fr: ["mode", "luxe", "durable", "vêtements premium", "AXYOM"],
+    en: ["fashion", "luxury", "sustainable", "premium clothing", "AXYOMSHOP"],
+    fr: ["mode", "luxe", "durable", "vêtements premium", "AXYOMSHOP"],
   };
 
   return {
+    metadataBase: new URL(baseUrl),
     title: {
       default: titles[lang as 'en' | 'fr'] || titles.en,
-      template: "%s | AXYOM",
+      template: "%s | AXYOMSHOP",
     },
     description: descriptions[lang as 'en' | 'fr'] || descriptions.en,
     keywords: keywords[lang as 'en' | 'fr'] || keywords.en,
+    alternates: {
+      canonical: `/${lang}`,
+      languages: {
+        'fr-FR': '/fr',
+        'en-US': '/en',
+      },
+    },
     openGraph: {
       type: "website",
       locale: lang === 'fr' ? "fr_FR" : "en_US",
-      siteName: "AXYOM",
+      siteName: "AXYOMSHOP",
       title: titles[lang as 'en' | 'fr'] || titles.en,
       description: descriptions[lang as 'en' | 'fr'] || descriptions.en,
+      url: `${baseUrl}/${lang}`,
     },
     twitter: {
       card: "summary_large_image",
@@ -91,6 +102,12 @@ export default async function RootLayout({
         <AuthProvider>
           <CartProvider>{children}</CartProvider>
         </AuthProvider>
+        <Toaster 
+          position="top-right" 
+          richColors 
+          closeButton
+          theme="dark"
+        />
         <Analytics />
       </body>
     </html>

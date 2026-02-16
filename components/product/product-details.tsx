@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Star, Truck, ShieldCheck, ArrowRight, Minus, Plus, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "./product-card";
+import { FavoriteButton } from "./favorite-button";
 import { useCart } from "@/components/cart/cart-context";
 import { FREE_SHIPPING_THRESHOLD } from "@/lib/types";
 import type { Product } from "@/lib/types";
@@ -253,6 +254,12 @@ export function ProductDetails({ product, relatedProducts, lang, dict }: Product
                 dict.products.addToCart
               )}
             </Button>
+            
+            {/* Favorite Button */}
+            <FavoriteButton 
+              productId={product.id} 
+              className="h-14 w-14 rounded-lg border-2 border-border hover:border-neon-cyan flex items-center justify-center"
+            />
           </div>
 
           {/* Shipping Info */}

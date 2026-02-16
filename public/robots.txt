@@ -1,0 +1,50 @@
+# robots.txt pour AXYOMSHOP
+# Date: 16 février 2026
+
+# Règles pour tous les robots
+User-agent: *
+Allow: /
+
+# Pages à ne pas indexer (privées ou techniques)
+Disallow: /api/
+Disallow: /_next/
+Disallow: /checkout
+Disallow: /cart
+Disallow: /profile/
+Disallow: /orders/
+Disallow: /wishlist/
+Disallow: /admin/
+
+# Fichiers et répertoires techniques
+Disallow: /*.json$
+Disallow: /*_buildManifest.js$
+Disallow: /*_ssgManifest.js$
+
+# Sitemap (Next.js génère automatiquement)
+Sitemap: https://axyomshop.com/sitemap.xml
+
+# Robots spécifiques optimisés
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+# Protection contre les bad bots
+User-agent: AhrefsBot
+Crawl-delay: 2
+
+User-agent: SemrushBot
+Crawl-delay: 2
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

@@ -3,13 +3,15 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { 
   isAuthenticated, 
-  getUserData, 
+  getUserData,
+  getAuthToken,
   logout as logoutUser,
   type UserData 
 } from "@/lib/api/auth";
 
 interface AuthContextType {
   user: UserData | null;
+  token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   logout: () => void;
@@ -20,14 +22,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserData | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const loadUser = () => {
     if (isAuthenticated()) {
       const userData = getUserData();
+      const userToken = getAuthToken();
       setUser(userData);
+      setToken(userToken);
     } else {
       setUser(null);
+      setToken(null);
     }
     setIsLoading(false);
   };
@@ -39,6 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     await logoutUser();
     setUser(null);
+    setToken(null);
   };
 
   const refreshUser = () => {
@@ -49,6 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
+        token,
         isAuthenticated: !!user,
         isLoading,
         logout,

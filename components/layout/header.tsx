@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, ShoppingBag, Search, User, Globe, Package, LogOut } from "lucide-react";
+import { Menu, X, ShoppingBag, Search, User, Globe, Package, LogOut, Heart } from "lucide-react";
 import { useCart } from "@/components/cart/cart-context";
 import { useAuth } from "@/components/auth/auth-context";
 import { cn } from "@/lib/utils";
@@ -113,7 +113,7 @@ export function Header({ lang, dict }: HeaderProps) {
             <SheetContent side="left" className="w-full bg-background border-border">
               <div className="flex items-center justify-between mb-8">
                 <Link href={`/${lang}`} className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
-                  <Image src="/Axyom.png" alt="AXYOM Logo" width={64} height={64} className="object-contain" />
+                  <Image src="/AXyomshop.png" alt="AXYOM Logo" width={64} height={64} className="object-contain" />
                   <span className="font-serif text-2xl tracking-wider">AXYOM</span>
                 </Link>
                 <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
@@ -139,8 +139,7 @@ export function Header({ lang, dict }: HeaderProps) {
         {/* Logo */}
         <div className="flex lg:flex-1">
           <Link href={`/${lang}`} className="flex items-center gap-1 font-serif text-2xl tracking-widest text-foreground hover:text-neon-cyan transition-colors">
-            <Image src="/Axyomshop1.png" alt="AXYOM Logo" width={172} height={72} className="object-contain" />
-            {/* <span>XYOMSHOP</span> */}
+            <Image src="/AXyomshop.png" alt="AXYOM Logo" width={192} height={82} className="object-contain" />
           </Link>
         </div>
 
@@ -190,6 +189,15 @@ export function Header({ lang, dict }: HeaderProps) {
             </form>
           </div>
           
+          {/* Favoris */}
+          <Link href={`/${lang}/wishlist`}>
+            <Button variant="ghost" size="icon" className="hidden lg:flex text-foreground/80 hover:text-neon-cyan">
+              <Heart className="h-5 w-5" />
+              <span className="sr-only">{lang === 'fr' ? 'Favoris' : 'Wishlist'}</span>
+            </Button>
+          </Link>
+          
+          {/* Orders */}
           <Link href={`/${lang}/orders`}>
             <Button variant="ghost" size="icon" className="hidden lg:flex text-foreground/80 hover:text-neon-cyan">
               <Package className="h-5 w-5" />
@@ -200,6 +208,12 @@ export function Header({ lang, dict }: HeaderProps) {
           {/* User menu - différent si connecté ou non */}
           {isAuthenticated && user ? (
             <div className="hidden lg:flex items-center gap-2">
+              <Link href={`/${lang}/profile`}>
+                <Button variant="ghost" size="icon" className="text-foreground/80 hover:text-neon-cyan">
+                  <User className="h-5 w-5" />
+                  <span className="sr-only">{lang === 'fr' ? 'Mon profil' : 'My profile'}</span>
+                </Button>
+              </Link>
               <div className="text-sm text-foreground/80 px-2">
                 {lang === 'fr' ? 'Bonjour' : 'Hello'}, <span className="text-neon-cyan font-medium">{user.first_name}</span>
               </div>

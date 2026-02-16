@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { User, Mail, Lock, CheckCircle, AlertCircle, Eye, EyeOff, Phone, MapPin, Home, Globe2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,9 @@ interface RegisterFormProps {
 
 export default function RegisterForm({ lang, dict }: RegisterFormProps) {
   const { refreshUser } = useAuth();
+  const searchParams = useSearchParams();
+  const refCode = searchParams.get("ref") || "";
+  
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -29,6 +32,7 @@ export default function RegisterForm({ lang, dict }: RegisterFormProps) {
     country: "",
     password: "",
     password_confirmation: "",
+    referral_code: refCode,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
@@ -74,6 +78,7 @@ export default function RegisterForm({ lang, dict }: RegisterFormProps) {
         city: formData.city,
         postal_code: formData.postal_code,
         country: formData.country,
+        referral_code: formData.referral_code,
       });
 
       // Rafraîchir le context d'authentification
@@ -90,7 +95,8 @@ export default function RegisterForm({ lang, dict }: RegisterFormProps) {
         postal_code: "",
         country: "",
         password: "", 
-        password_confirmation: "" 
+        password_confirmation: "",
+        referral_code: "",
       });
       
       // Redirection après 1.5 secondes
@@ -471,6 +477,32 @@ export default function RegisterForm({ lang, dict }: RegisterFormProps) {
               </button>
             </div>
           </div>
+            </div>
+          </div>
+
+          {/* Referral Code Section */}
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2 border-t border-border pt-6">
+              <CheckCircle className="h-5 w-5 text-neon-cyan" />
+              {dict.auth.referralCode || "Code de Parrainage"}
+            </h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              {dict.auth.referralCodeDesc || "Si vous avez été parrainé, entrez le code ci-dessous pour bénéficier d'avantages exclusifs."}
+            </p>
+            <div className="space-y-2">
+              <Label htmlFor="referral_code">
+                {dict.auth.referralCodeLabel || "Code de parrainage"} <span className="text-muted-foreground text-xs">({dict.contact.optional})</span>
+              </Label>
+              <Input
+                id="referral_code"
+                name="referral_code"
+                type="text"
+                value={formData.referral_code}
+                onChange={handleChange}
+                placeholder="Ex: ABC123"
+                className="border-dashed border-neon-cyan/50"
+                disabled={isSubmitting}
+              />
             </div>
           </div>
 

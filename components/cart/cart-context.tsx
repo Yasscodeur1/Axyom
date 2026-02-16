@@ -153,6 +153,7 @@ interface CartContextType {
   updateQuantity: (productId: string, size: string, color: string, quantity: number) => void;
   clearCart: () => void;
   toggleSubscription: () => void;
+  validateStocks: () => Promise<void>;
   subtotal: number;
   shippingCost: number;
   total: number;
@@ -205,6 +206,49 @@ export function CartProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "TOGGLE_SUBSCRIPTION" });
   }, []);
 
+  // Validation des stocks via l'API
+  const validateStocks = useCallback(async () => {
+    if (state.items.length === 0) return;
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/check-stocks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          items: state.items.map(i => ({ 
+            id: i.product.id, 
+            qty: i.quantity 
+          })) 
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Erreur lors de la vérification des stocks');
+      }
+      
+      const { availableStocks } = await response.json();
+
+      // Si un produit n'a plus assez de stock, on ajuste automatiquement
+      state.items.forEach(item => {
+        const realStock = availableStocks[item.product.id];
+        if (realStock !== undefined && realStock < item.quantity) {
+          updateQuantity(item.product.id, item.size, item.color, realStock);
+          // TODO: Ajouter une notification utilisateur ici
+          console.warn(`Stock mis à jour pour ${item.product.name}: ${item.quantity} → ${realStock}`);
+        }
+      });
+    } catch (e) {
+      console.error("Impossible de vérifier les stocks:", e);
+    }
+  }, [state.items, updateQuantity]);
+
+  // Vérification des stocks au montage du composant
+  useEffect(() => {
+    validateStocks();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   const subtotal = useMemo(
     () => state.items.reduce((sum, item) => sum + item.product.price * item.quantity, 0),
     [state.items]
@@ -225,6 +269,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       updateQuantity,
       clearCart,
       toggleSubscription,
+      validateStocks,
       subtotal,
       shippingCost,
       total,
@@ -240,6 +285,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       updateQuantity,
       clearCart,
       toggleSubscription,
+      validateStocks,
       subtotal,
       shippingCost,
       total,

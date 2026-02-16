@@ -1,5 +1,69 @@
 import type { Product } from "@/lib/types";
 
+// Produits de secours (fallback) - définis plus bas dans le fichier
+let fallbackProducts: Product[] = [];
+
+// Fonction pour récupérer les produits depuis l'API Laravel
+export async function getProducts(lang: string = 'fr'): Promise<Product[]> {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL?.trim() || "http://127.0.0.1:8000";
+    
+    const response = await fetch(`${apiUrl}/api/products`, {
+      cache: "no-store", // Toujours récupérer les données fraîches
+      headers: {
+        "Accept": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      return products; // Retourne les produits statiques
+    }
+
+    const data = await response.json();
+    const apiProducts = Array.isArray(data) ? data : (data.data || []);
+    
+    // Transformer les données Laravel en format Product
+    const productsFromApi: Product[] = apiProducts.map((item: any) => {
+      // Utiliser les noms multilingues (name_fr, name_en) ou name simple
+      const name = item[`name_${lang}`] || item.name_fr || item.name_en || item.name || "Produit sans nom";
+      const description = item[`description_${lang}`] || item.description_fr || item.description_en || item.description || "";
+      
+      // Générer un slug à partir du nom si non fourni
+      const slug = item.slug || name.toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+      
+      return {
+        id: item.id.toString(),
+        name,
+        slug,
+        price: parseFloat(item.price),
+        originalPrice: item.wholesale_price ? parseFloat(item.price) : undefined,
+        description,
+        shortDescription: description.substring(0, 100),
+        images: item.images && item.images.length > 0 
+          ? item.images 
+          : ["https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80"],
+        category: item.category || item.brand || "Fashion",
+        tags: item.tags || [],
+        sizes: item.sizes || ["S", "M", "L", "XL"],
+        colors: item.colors || [{ name: "Default", hex: "#000000" }],
+        inStock: (item.stock || 0) > 0,
+        stock: item.stock || 0,
+        rating: item.rating || 4.5,
+        reviewCount: item.review_count || 0,
+        isFeatured: item.is_featured || (item.stock > 50),
+        isNew: item.is_new || false,
+      };
+    });
+
+    return productsFromApi;
+  } catch (error) {
+    return products; // Retourne les produits statiques en cas d'erreur
+  }
+}
+
+// Fonction synchrone pour les composants qui en ont besoin (utilise le cache)
 export const products: Product[] = [
   {
     id: "1",
@@ -23,6 +87,7 @@ export const products: Product[] = [
       { name: "Emerald", hex: "#2d5a4e" },
     ],
     inStock: true,
+    stock: 15,
     rating: 4.9,
     reviewCount: 127,
     isFeatured: true,
@@ -49,6 +114,7 @@ export const products: Product[] = [
       { name: "Rust", hex: "#b7410e" },
     ],
     inStock: true,
+    stock: 23,
     rating: 4.8,
     reviewCount: 89,
     isFeatured: true,
@@ -74,6 +140,7 @@ export const products: Product[] = [
       { name: "Navy", hex: "#000080" },
     ],
     inStock: true,
+    stock: 8,
     rating: 4.7,
     reviewCount: 156,
     isFeatured: true,
@@ -99,6 +166,7 @@ export const products: Product[] = [
       { name: "Blush", hex: "#de5d83" },
     ],
     inStock: true,
+    stock: 12,
     rating: 4.9,
     reviewCount: 73,
     isNew: true,
@@ -125,6 +193,7 @@ export const products: Product[] = [
       { name: "Electric", hex: "#00ffff" },
     ],
     inStock: true,
+    stock: 4,
     rating: 4.8,
     reviewCount: 214,
     isFeatured: true,
@@ -150,6 +219,7 @@ export const products: Product[] = [
       { name: "Rose Gold", hex: "#b76e79" },
     ],
     inStock: true,
+    stock: 18,
     rating: 5.0,
     reviewCount: 48,
     isNew: true,
@@ -175,6 +245,7 @@ export const products: Product[] = [
       { name: "Heather", hex: "#9aa297" },
     ],
     inStock: true,
+    stock: 6,
     rating: 4.9,
     reviewCount: 34,
     isFeatured: true,
@@ -200,29 +271,92 @@ export const products: Product[] = [
       { name: "Neon", hex: "#39ff14" },
     ],
     inStock: true,
+    stock: 20,
     rating: 4.7,
     reviewCount: 91,
   },
 ];
 
-export function getProductBySlug(slug: string): Product | undefined {
-  return products.find((p) => p.slug === slug);
+// Fonction pour récupérer un produit par slug depuis l'API
+export async function getProductBySlug(slug: string, lang: string = 'fr'): Promise<Product | null> {
+  try {
+    // D'abord, essayer de récupérer tous les produits et trouver celui qui correspond au slug
+    const allProducts = await getProducts(lang);
+    const product = allProducts.find((p) => p.slug === slug);
+    
+    if (product) {
+      return product;
+    }
+
+    // Si pas trouvé dans la liste, essayer l'API directement (au cas où le slug serait un ID)
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL?.trim() || "http://127.0.0.1:8000";
+    const response = await fetch(`${apiUrl}/api/products/${slug}`, {
+      cache: "no-store",
+      headers: {
+        "Accept": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      console.error("❌ Produit non trouvé:", slug);
+      return products.find((p) => p.slug === slug) || null;
+    }
+
+    const data = await response.json();
+    const item = Array.isArray(data) ? data[0] : (data.data || data);
+    
+    if (!item) return null;
+    
+    const name = item[`name_${lang}`] || item.name_fr || item.name_en || item.name || "Produit sans nom";
+    const description = item[`description_${lang}`] || item.description_fr || item.description_en || item.description || "";
+    const generatedSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    
+    return {
+      id: item.id.toString(),
+      name,
+      slug: item.slug || generatedSlug,
+      price: parseFloat(item.price),
+      originalPrice: item.wholesale_price ? parseFloat(item.price) : undefined,
+      description,
+      shortDescription: description.substring(0, 100),
+      images: item.images && item.images.length > 0 
+        ? item.images 
+        : ["https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80"],
+      category: item.category || item.brand || "Fashion",
+      tags: item.tags || [],
+      sizes: item.sizes || ["S", "M", "L", "XL"],
+      colors: item.colors || [{ name: "Default", hex: "#000000" }],
+      inStock: (item.stock || 0) > 0,
+      stock: item.stock || 0,
+      rating: item.rating || 4.5,
+      reviewCount: item.review_count || 0,
+      isFeatured: item.is_featured || (item.stock > 50),
+      isNew: item.is_new || false,
+    };
+  } catch (error) {
+    console.error("❌ Erreur getProductBySlug:", error);
+    return products.find((p) => p.slug === slug) || null;
+  }
 }
 
-export function getFeaturedProducts(): Product[] {
-  return products.filter((p) => p.isFeatured);
+export async function getFeaturedProducts(lang: string = 'fr'): Promise<Product[]> {
+  const allProducts = await getProducts(lang);
+  return allProducts.filter((p) => p.isFeatured);
 }
 
-export function getNewProducts(): Product[] {
-  return products.filter((p) => p.isNew);
+export async function getNewProducts(lang: string = 'fr'): Promise<Product[]> {
+  const allProducts = await getProducts(lang);
+  return allProducts.filter((p) => p.isNew);
 }
 
-export function getProductsByCategory(category: string): Product[] {
-  return products.filter(
+export async function getProductsByCategory(category: string, lang: string = 'fr'): Promise<Product[]> {
+  const allProducts = await getProducts(lang);
+  return allProducts.filter(
     (p) => p.category.toLowerCase() === category.toLowerCase()
   );
 }
 
-export function getAllCategories(): string[] {
-  return [...new Set(products.map((p) => p.category))];
+export async function getAllCategories(lang: string = 'fr'): Promise<string[]> {
+  const allProducts = await getProducts(lang);
+  return [...new Set(allProducts.map((p) => p.category))];
 }

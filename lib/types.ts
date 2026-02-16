@@ -12,6 +12,7 @@ export interface Product {
     sizes: string[];
     colors: { name: string; hex: string }[];
     inStock: boolean;
+    stock?: number; // Quantité disponible en stock
     rating: number;
     reviewCount: number;
     isFeatured?: boolean;

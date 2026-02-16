@@ -39,8 +39,7 @@ export function Footer({ lang, dict }: FooterProps) {
           {/* Brand */}
           <div className="col-span-2 lg:col-span-1">
             <Link href={`/${lang}`} className="flex items-center gap-0 font-serif text-2xl tracking-widest text-foreground">
-              <Image src="/Axyomshop1.png" alt="AXYOM Logo" width={172} height={72} className="object-contain" />
-              {/* <span>XYOMSHOP</span> */}
+              <Image src="/AXyomshop.png" alt="AXYOM Logo" width={192} height={82} className="object-contain" />
             </Link>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
               {dict.footer.brandDesc}

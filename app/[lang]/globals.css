@@ -42,6 +42,7 @@
   /* Custom accent colors */
   --neon-cyan: oklch(0.8 0.15 180);
   --neon-cyan-dim: oklch(0.5 0.1 180);
+  --neon-purple: oklch(0.7 0.2 300);
   --glass: oklch(0.15 0.02 260 / 0.6);
   --glass-border: oklch(0.3 0.02 260 / 0.4);
 }
@@ -89,6 +90,7 @@
   --color-foreground: var(--foreground);
   --color-neon-cyan: var(--neon-cyan);
   --color-neon-cyan-dim: var(--neon-cyan-dim);
+  --color-neon-purple: var(--neon-purple);
   --color-glass: var(--glass);
   --color-glass-border: var(--glass-border);
   --color-card: var(--card);
@@ -152,5 +154,45 @@
   
   .neon-text {
     text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+  }
+  
+  /* Custom animations for OrderBump */
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.95;
+    }
+  }
+  
+  @keyframes bounce-slow {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .animate-bounce-slow {
+    animation: bounce-slow 2s ease-in-out infinite;
+  }
+  
+  .animate-shimmer {
+    animation: shimmer 3s ease-in-out infinite;
   }
 }

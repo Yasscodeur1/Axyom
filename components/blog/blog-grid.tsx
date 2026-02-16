@@ -8,10 +8,12 @@ import { cn } from "@/lib/utils";
 interface BlogGridProps {
   posts: BlogPost[];
   categories: string[];
+  lang: string;
+  dict: any;
 }
 
 
-export function BlogGrid({ posts, categories }: BlogGridProps) {
+export function BlogGrid({ posts, categories, lang, dict }: BlogGridProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const filteredPosts = selectedCategory
@@ -32,7 +34,7 @@ export function BlogGrid({ posts, categories }: BlogGridProps) {
               : "bg-card text-muted-foreground hover:text-foreground"
           )}
         >
-          All
+          {dict.blog.all}
         </button>
         {categories.map((category) => (
           <button
@@ -46,7 +48,7 @@ export function BlogGrid({ posts, categories }: BlogGridProps) {
                 : "bg-card text-muted-foreground hover:text-foreground"
             )}
           >
-            {category}
+            {dict.blog.categories[category as keyof typeof dict.blog.categories] || category}
           </button>
         ))}
       </div>
@@ -54,7 +56,7 @@ export function BlogGrid({ posts, categories }: BlogGridProps) {
       {/* Posts Grid */}
       <div className="grid md:grid-cols-2 gap-8">
         {filteredPosts.map((post, index) => (
-          <BlogCard key={post.id} post={post} featured={index === 0 && !selectedCategory} />
+          <BlogCard key={post.id} post={post} featured={index === 0 && !selectedCategory} lang={lang} dict={dict} />
         ))}
       </div>
     </div>
